@@ -6,13 +6,17 @@
         <title>TNM048 Projekt</title>
         <link rel="stylesheet" href="libs/css/index.css" />
         <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css" />
+      <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css" />
+-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
     </head>
 
     <body class="container-fluid">
         <div class="card text-center">
             <div class="card-header">
-                <h2>Visual Information-Seeking Mantra</h2>
+                <h2>Food consumed and produced</h2>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -21,34 +25,31 @@
                         <div id="plot"></div>
                         <div id="mapid"></div>
                     </div>
-                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
-                        <div class="row">
-                            <div class="col-12" id="tooltip">
-                                <br>
-                                <h5><strong>Information</strong></h5>
-                                <hr>
-                                <p><span id="date">Date</span></p>
-                                <p><span id="magnitude">Magnitude</span></p>
-                                <p><span id="deaths">Deaths</span></p>
-                                <p><span id="country">Country</span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12" id="color-info">
-                                <br>
-                                <h5><strong>Color Coding</strong></h5>
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+        <button type="button" onclick="ParseData()">Click Me!</button>
     </body>
 
     <script type=text/javascript src="libs/jquery/jquery.min.js"></script>
     <script type=text/javascript src=libs/bootstrap/js/bootstrap.min.js></script>
     <script type="text/javascript" src="libs/d3/d3.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet-src.js"></script>-->
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    <script type=text/javascript src="js/map.js"></script>
+    <script type=text/javascript src="js/main.js"></script>
+    <script src="./libS/d3/d3.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="./libS/queue/queue.js" type='text/javascript'></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet-src.js"></script>
+
+
+    <!--Our scripts-->
+      <script src="./js/DataHandling.js" type='text/javascript'></script>
 
 </html>
