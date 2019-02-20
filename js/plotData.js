@@ -31,7 +31,7 @@ function FocusPlotContext(data){
 
     //Scale and axes for the plot
     var xScale = d3.scaleTime().range([0, width]),
-        yScale = d3.scaleLinear().range([height, 0]),
+        yScale = d3.scaleLog().range([height, 0]),
         xAxis = d3.axisBottom(xScale),
         yAxis = d3.axisLeft(yScale);
 
@@ -42,7 +42,8 @@ function FocusPlotContext(data){
         maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
     //data[i][""]
     //Här ska man hämta in y-axelns värden
-
+    var foodAmount = d3.max(data[0]);
+    console.log(foodAmount);
     //console.log(function(d));
 
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
