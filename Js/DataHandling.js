@@ -33,3 +33,24 @@ function ParseData(data)
 	})
 	return [food,feed];
 }
+
+
+function maxAllYears(data)
+{
+	max = 0;
+	data.forEach(function(d)
+	{
+		for(var i =1961; i<=2013;i++)
+		{
+			if(max <d["Y"+i])
+			{
+				max = d["Y"+i];
+			}
+		}
+	})
+
+
+
+	return max;
+}
+
