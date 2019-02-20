@@ -9,7 +9,7 @@ function FocusPlotContext(data){
 
 
     /*
-     * Select the plot div and append a svg tag
+     * Select the plot div and append a svg tags
      * Then add two g tags to it
      */
     

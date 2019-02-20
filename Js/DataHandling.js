@@ -48,9 +48,6 @@ function maxAllYears(data)
 			}
 		}
 	})
-
-
-
 	return max;
 }
 
