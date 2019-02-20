@@ -12,7 +12,7 @@ function FocusPlotContext(data){
      * Select the plot div and append a svg tags
      * Then add two g tags to it
      */
-    
+
     var svg = d3.select("#plot").append("svg")
         .attr("position", "relative")
         .attr("width", "100%")
@@ -27,27 +27,29 @@ function FocusPlotContext(data){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //Parse the date
-    var parseDate = d3.timeParse("%Y-%m-%d");
+    var parseDate = d3.timeParse("%Y");
 
     //Scale and axes for the plot
     var xScale = d3.scaleTime().range([0, width]),
-        yScale = d3.scaleLinear().range([height, 0]),
+        yScale = d3.scaleLog().range([height, 0]),
         xAxis = d3.axisBottom(xScale),
         yAxis = d3.axisLeft(yScale);
 
     //Scale parameters, get them from function call with data (d) as argument
     //Features och properties funkar inte med vårat dataset, max och minDate är värdet på x-axeln
-    //var maxDate = d3.max(data.features, function(d){ return parseDate(d.properties.Date) });
-    //var minDate = d3.min(data.features, function(d){ return parseDate(d.properties.Date) });
+    var maxDate = parseDate(2013),
+        minDate = parseDate(1960),
+        maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
+    //data[i][""]
     //Här ska man hämta in y-axelns värden
-
+    var maxFoodAmount = maxAllYears(data[0]);
     //console.log(function(d));
 
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
 
     //Setting min and max values of each axis
-    xScale.domain([0, 50]);
-    yScale.domain([0, 10])
+    xScale.domain([minDate, maxDate_plus]);
+    yScale.domain([1, maxFoodAmount])
     //navXscale är brushens graf
 
 
