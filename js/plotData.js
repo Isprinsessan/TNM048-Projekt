@@ -42,15 +42,14 @@ function FocusPlotContext(data){
         maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
     //data[i][""]
     //Här ska man hämta in y-axelns värden
-    var foodAmount = d3.max(data[0]);
-    console.log(foodAmount);
+    var maxFoodAmount = maxAllYears(data[0]);
     //console.log(function(d));
 
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
 
     //Setting min and max values of each axis
     xScale.domain([minDate, maxDate_plus]);
-    yScale.domain([0, 10])
+    yScale.domain([1, maxFoodAmount])
     //navXscale är brushens graf
 
 
