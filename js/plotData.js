@@ -12,7 +12,7 @@ function FocusPlotContext(data){
      * Select the plot div and append a svg tag
      * Then add two g tags to it
      */
-    
+
     var svg = d3.select("#plot").append("svg")
         .attr("position", "relative")
         .attr("width", "100%")
@@ -27,7 +27,7 @@ function FocusPlotContext(data){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //Parse the date
-    var parseDate = d3.timeParse("%Y-%m-%d");
+    var parseDate = d3.timeParse("%Y");
 
     //Scale and axes for the plot
     var xScale = d3.scaleTime().range([0, width]),
@@ -37,8 +37,10 @@ function FocusPlotContext(data){
 
     //Scale parameters, get them from function call with data (d) as argument
     //Features och properties funkar inte med vårat dataset, max och minDate är värdet på x-axeln
-    //var maxDate = d3.max(data.features, function(d){ return parseDate(d.properties.Date) });
-    //var minDate = d3.min(data.features, function(d){ return parseDate(d.properties.Date) });
+    var maxDate = parseDate(2013),
+        minDate = parseDate(1960),
+        maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
+    //data[i][""]
     //Här ska man hämta in y-axelns värden
 
     //console.log(function(d));
@@ -46,7 +48,7 @@ function FocusPlotContext(data){
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
 
     //Setting min and max values of each axis
-    xScale.domain([0, 50]);
+    xScale.domain([minDate, maxDate_plus]);
     yScale.domain([0, 10])
     //navXscale är brushens graf
 

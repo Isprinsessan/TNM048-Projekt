@@ -1,6 +1,6 @@
 function worldMap() {
 
-    console.log("hej");
+  //  console.log("hej");
   var mymap = L.map('mapid').setView([51.505, -0.09], 3);
 
 
