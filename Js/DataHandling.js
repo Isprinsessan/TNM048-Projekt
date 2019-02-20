@@ -1,10 +1,13 @@
-
-
-function ParseData()
+function ReadData()
 {
 
-  	data =d3.csvParseRows("/Data/FAO.csv");
-  	console.log(data);
+}
 
 
+
+
+function ParseData(data)
+{
+	console.log("Hej");
+	return data;
 }
