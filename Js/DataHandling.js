@@ -1,10 +1,18 @@
-
-
-function ParseData()
+function ReadData()
 {
 
-  	data =d3.csvParseRows("/Data/FAO.csv");
-  	console.log(data);
+}
 
+
+
+<<<<<<< HEAD
     return data;
 }
+=======
+
+function ParseData(data)
+{
+	console.log("Hej");
+	return data;
+}
+>>>>>>> e0c65ae8a3047ce7cdbc990dd2925332a1435448
