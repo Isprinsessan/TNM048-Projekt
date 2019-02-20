@@ -1,2 +1,4 @@
 
 worldMap();
+
+plotDate(ParseData());
