@@ -1,4 +1,4 @@
-function plotData(data){
+function FocusPlotContext(data){
 
     //Create margins and figure size
     var margin = { top : 20, right: 20, bottom: 150, left: 40 },
@@ -12,23 +12,26 @@ function plotData(data){
      * Select the plot div and append a svg tag
      * Then add two g tags to it
      */
+    
     var svg = d3.select("#plot").append("svg")
         .attr("position", "relative")
         .attr("width", "100%")
         .attr("height", height + margin2.top + margin.bottom);
 
     var focus = svg.append("g")
-        .attr("class", "focus");
+        .attr("class", "focus")
+        .attr("transform", "translate(" + margin2.left + "," + margin2.top +  ")");
 
     var context = svg.append("g")
-        .attr("class", "context");
+        .attr("class", "context")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //Parse the date
     var parseDate = d3.timeParse("%Y-%m-%d");
 
     //Scale and axes for the plot
     var xScale = d3.scaleTime().range([0, width]),
-        yScale = d3.scaleLinear().range([0, height]),
+        yScale = d3.scaleLinear().range([height, 0]),
         xAxis = d3.axisBottom(xScale),
         yAxis = d3.axisLeft(yScale);
 
@@ -44,7 +47,7 @@ function plotData(data){
 
     //Setting min and max values of each axis
     xScale.domain([0, 50]);
-    yScale.domain([0,10])
+    yScale.domain([0, 10])
     //navXscale är brushens graf
 
 
@@ -56,26 +59,26 @@ function plotData(data){
 
     focus.append("g")
         .attr("class", "axis axis--x")
-        .attr("transform", "transate (0 , " + height + ")")
+        .attr("transform", "translate (0 , " + height  + ")")
         .call(xAxis);
 
     focus.append("g")
         .attr("class", "axis axis--y")
-        call(yAxis);
+        .call(yAxis);
 
     //Add legend to the y-axis in the plot
     d3.select(".legend")
         .style('left', "170px")
         .style('top', "300px");
     svg.append("text")
-        .attr("class", "axis-label");
+        .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("y", 0)
         .attr("x", -margin2.top - 120)
         .attr('text-anchor', "end")
         .attr("dy", ".75em")
         .style("font-size", "20px")
-        .text("Skillnad i matskit")
+        .text("Skillnad i matskit");
 
    /**
     Här ska punkterna plottas ut
