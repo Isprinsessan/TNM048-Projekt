@@ -1,13 +1,13 @@
 function ParseDataForPlot(data){
 
-  var parsedData = getYearAndValues(data[0]);
-  FocusPlotContext(data[0]);
+  FocusPlotContext(data);
 
 }
 
 
 function FocusPlotContext(data)
 {
+
 
   var margin = { top : 20, right: 20, bottom: 150, left: 40 },
       margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
@@ -31,6 +31,8 @@ function FocusPlotContext(data)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
+  //
+  var maxValue = maxAllYears(data);
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -41,11 +43,12 @@ function FocusPlotContext(data)
   var x = d3.scaleTime().rangeRound([0, width]);
   var y = d3.scaleLinear().rangeRound([height, 0]);
   x.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
-  y.domain([0 ,d3.max(axisData, function(d) { return d.value })]);
+  y.domain([0 ,maxValue]);
 
-  var nrOfLines = 2;
+
+
   //Skapa linjen av datum och värde
-  for(var i = 0; i < nrOfLines; i++)
+  for(var i = 0; i < data.length; i++)
   {
       var currentData = getYearAndValues(data[i]);
 
