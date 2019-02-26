@@ -75,6 +75,21 @@ function maxValueYears(data, minYear, maxYear)
 }
 
 
+function splitOnAttribute(data, attribute, value)
+{
+	var splitData = [];
+
+	data.forEach(function(d)
+	{
+		if(value == d[attribute])
+		{
+			splitData.push(d);
+		}
+
+	})
+	return splitData;
+}
+
 
 
 
