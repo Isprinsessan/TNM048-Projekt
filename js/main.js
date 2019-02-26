@@ -6,7 +6,7 @@ d3.csv("/data/FAO.csv",function(data) {
   	//dataObject[0] is all food objects and dataObject[1] is all feed objects
   	dataObject =ParseData(data);
   	//console.log(splitOnAttribute(dataObject[0],'Area Code', 2));
-    FocusPlotContext(dataObject);
+    ParseDataForPlot(dataObject);
 
     $.getJSON("/data/customLow.geo.json",function(wData){
       worldMap(dataObject,wData);
