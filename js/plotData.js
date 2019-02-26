@@ -1,44 +1,96 @@
 function FocusPlotContext(data){
+  var xValue = [ [2000,1, 1], [2001, 1, 1], [2002,1,1], [2003,1,1], [2004,1,1], [2005,1,1]];
+  var yValue = [14000, 15000, 16000, 17000, 18000, 19000];
 
-    //Create margins and figure size
-    var margin = { top : 20, right: 20, bottom: 150, left: 40 },
-        margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
-        width = $("#plot").parent().width() - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        height2 = 200 - margin2.top - margin2.bottom;
+  //var parsedData = parseData(xValue, yValue);
+  var parsedData = getYearAndValues(data[0]);
+  drawChart(data[0]);
+}
 
 
-    /*
-     * Select the plot div and append a svg tags
-     * Then add two g tags to it
-     */
+function drawChart(data)
+{
 
-    var svg = d3.select("#plot").append("svg")
-        .attr("position", "relative")
-        .attr("width", "100%")
-        .attr("height", height + margin2.top + margin.bottom);
+  var margin = { top : 20, right: 20, bottom: 150, left: 40 },
+      margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
+      width = $("#plot").parent().width() - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom,
+      height2 = 200 - margin2.top - margin2.bottom;
 
-    var focus = svg.append("g")
-        .attr("class", "focus")
-        .attr("transform", "translate(" + margin2.left + "," + margin2.top +  ")");
+  var svg = d3.select("#plot").append("svg")
+      .attr("position", "relative")
+      .attr("width", "100%")
+      .attr("height", height + margin2.top + margin.bottom);
+
+  var focus = svg.append("g")
+      .attr("class", "focus")
+      .attr("transform", "translate(" + margin2.left + "," + margin2.top +  ")");
+
+  var x = d3.scaleTime().rangeRound([0, width]);
+  var y = d3.scaleLinear().rangeRound([height, 0]);
+
+  //Parse the dates
+  var parseDate = d3.timeParse("%Y");
+
+  var axisData = getYearAndValues(data[0]);
+  console.log(axisData);
+  x.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
+  y.domain([0 ,d3.max(axisData, function(d) { return d.value })]);
+
+
+  //Skapa linjen av datum och värde
+  for(var i = 0; i < 2; i++)
+  {
+  var currentData = getYearAndValues(data[i]);
+
+  var line = d3.line()
+     .x(function(d) { return x(parseDate(d.year))})
+     .y(function(d) { return y(d.value)})
+
+
+  //Skapa x-axeln
+  focus.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  //Skapa y-axeln
+  focus.append("g")
+     .call(d3.axisLeft(y))
+     .append("text")
+     .attr("fill", "#000")
+     .attr("transform", "rotate(-90)")
+     .attr("y", 6)
+     .attr("dy", "0.71em")
+     .attr("text-anchor", "end")
+     .text("Price ($)");
+
+  //Skapa linjen
+  console.log(currentData);
+  focus.append("path")
+    .datum(currentData)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 1.5)
+    .attr("d", line);
+  }
+/*
 
     var context = svg.append("g")
         .attr("class", "context")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    //Parse the date
-    var parseDate = d3.timeParse("%Y");
-
     //Scale and axes for the plot
-    var xScale = d3.scaleTime().range([0, width]),
-        yScale = d3.scaleLinear().range([height, 0]),
-        xAxis = d3.axisBottom(xScale),
-        yAxis = d3.axisLeft(yScale);
+    var x = d3.scaleTime().range([0, width]),
+        y = d3.scaleLinear().range([height, 0]),
+        xAxis = d3.axisBottom(x),
+        yAxis = d3.axisLeft(y);
 
     //Scale parameters, get them from function call with data (d) as argument
     //Features och properties funkar inte med vårat dataset, max och minDate är värdet på x-axeln
-    var maxDate = parseDate(2013),
-        minDate = parseDate(1960),
+    var maxDate = parseDate(2006),
+        minDate = parseDate(2000),
         maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
     //data[i][""]
     //Här ska man hämta in y-axelns värden
@@ -48,15 +100,15 @@ function FocusPlotContext(data){
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
 
     //Setting min and max values of each axis
-    xScale.domain([minDate, maxDate_plus]);
-    yScale.domain([1, maxFoodAmount])
+    x.domain([minDate, maxDate_plus]);
+    y.domain([1, 16]);
     //navXscale är brushens graf
 
 
     //Rendering the focus plot
 
     //Append g tag for plotting the lines and the axes
-    var dots = focus.append("g");
+    //var dots = focus.append("g");
     //dots.attr("", "url(#clip)");
 
     focus.append("g")
@@ -101,43 +153,40 @@ function FocusPlotContext(data){
 
     plot(values);
 */
+/*
+var xValue = [2000, 2001, 2002, 2003, 2004, 2005];
+var yValue = [10, 11, 12, 13, 14, 15];
 
-var lineGenerator = d3.line();
+var line = d3.line()
+  .x(function(d) { return x(d)})
+  .y(function(d) { return y(d)})
+  x.domain(d3.extent(xValue, function(d) { return d }));
+  y.domain(d3.extent(yValue, function(d) { return d }));
 
-var points = [ [1960,150000],[1965,100000],[1970,150000],[1975,175000],[1980,200000] ];
+console.log(line);
 
-var pathData = lineGenerator(points);
-console.log(pathData);
-
-var g = svg.append("g")
-   .attr("transform",
-      "translate(" + margin.left + "," + margin.top + ")"
-   );
-
-
-g.append('path')
-    .datum(data)
+focus.append('path')
+    .datum(xValue)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
     .attr("stroke-width", 1.5)
-    .attr("d", pathData);
+    .attr("d", line);
 
-d3.select('path')
-    .attr('d', pathData);
+context.append('path')
+    .datum(xValue)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 1.5)
+    .attr("d", line);
+*/
 
 /*
 var x = {1,2,3,4,5,6};
 var y = {90, 91, 92, 93, 94, 95};
-
-
-    var line = d3.line()
-      .xScale(function(d) {
-        console.log(d);
-         return x(d.date)})
-      .yScale(function(d) { return y(d.value)})
-      xScale.domain(d3.extent(data, function(d) { return d.date }));
-      yScale.domain(d3.extent(data, function(d) { return d.value }));
 */
+
 }
