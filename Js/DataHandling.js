@@ -90,8 +90,6 @@ function splitOnAttribute(data, attribute, value)
 	return splitData;
 }
 
-
-
 function getYearAndValues(data)
 {
 	var result = [];
@@ -105,28 +103,3 @@ function getYearAndValues(data)
 	}
 	return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
