@@ -35,6 +35,7 @@ function ParseData(data)
 }
 
 
+//Return the max value for all years for the data that is send into the function
 function maxAllYears(data)
 {
 	max = 0;
@@ -50,4 +51,50 @@ function maxAllYears(data)
 	})
 	return max;
 }
+
+//Returns an array with the max value for each year for all data between max and min Year
+function maxValueYears(data, minYear, maxYear)
+{
+	var maxYears =[];
+	console.log(data);
+	for(var i =minYear; i<=maxYear;i++)
+	{
+		var max =0;
+
+		data.forEach(function(d)
+		{
+			if(max<d["Y"+i])
+			{
+				max =d["Y"+i];
+			}
+
+		})
+		maxYears.push(max);
+	}
+	return maxYears;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
