@@ -75,7 +75,6 @@ function FocusPlotContext(data)
           .attr("text-anchor", "end")
           .text("Amount (kg)");
 
-      console.log(currentData);
 
       //Skapa linjen
       focus.append("path")
