@@ -31,7 +31,7 @@ function FocusPlotContext(data){
 
     //Scale and axes for the plot
     var xScale = d3.scaleTime().range([0, width]),
-        yScale = d3.scaleLog().range([height, 0]),
+        yScale = d3.scaleLinear().range([height, 0]),
         xAxis = d3.axisBottom(xScale),
         yAxis = d3.axisLeft(yScale);
 
@@ -42,7 +42,7 @@ function FocusPlotContext(data){
         maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
     //data[i][""]
     //Här ska man hämta in y-axelns värden
-    var maxFoodAmount = maxAllYears(data[0]);
+    var maxFoodAmount = maxAllYears(data[0])/1000;
     //console.log(function(d));
 
     //var maxDate_plus = new Date(maxDate.getTime() + 300 * 144000000);
@@ -85,4 +85,43 @@ function FocusPlotContext(data){
    /**
     Här ska punkterna plottas ut
     */
+
+/*
+    values = dots.selectAll()
+      .data(data[0])
+      .enter().append("circle")
+      .attr("class", "dot")
+      .filter(function (d) {return d["Y1961"] != null})
+      .attr("cx", function (d) {
+        return xScale(parseDate(1961));""
+      })
+      .attr("cy", function (d) {
+        return yScale("Y1961");
+      });
+
+    plot(values);
+*/
+
+var lineGenerator = d3.line();
+
+var points = [ [10,1960],[20,1965],[30,1970],[40,1975],[45,1980] ];
+
+var pathData = lineGenerator(points);
+
+d3.select('path')
+    .attr('d', pathData);
+
+/*
+var x = {1,2,3,4,5,6};
+var y = {90, 91, 92, 93, 94, 95};
+
+
+    var line = d3.line()
+      .xScale(function(d) {
+        console.log(d);
+         return x(d.date)})
+      .yScale(function(d) { return y(d.value)})
+      xScale.domain(d3.extent(data, function(d) { return d.date }));
+      yScale.domain(d3.extent(data, function(d) { return d.value }));
+*/
 }
