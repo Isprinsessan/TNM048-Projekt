@@ -52,3 +52,8 @@
     font-size: 14px;
     line-height: 30px;
 }
+
+path {
+  fill: none;
+  stroke: #999;
+}

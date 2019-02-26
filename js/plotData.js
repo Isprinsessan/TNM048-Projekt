@@ -1,7 +1,25 @@
 function FocusPlotContext(data){
+    var xScale = d3.scaleLinear().domain([1961, 2013]).range([0, 600]);
+    var yScale = d3.scaleLinear().domain([0, 5000]).range([150, 0]);
 
+    var lineGenerator = d3.line()
+      .x(function(d) {
+        return xScale(d.year);
+    })
+    .y(function(d) {
+       return yScale(d.value);
+      });
+
+    values = getYearAndValues(data[0][0]);
+    console.log(values);
+
+
+    var line = lineGenerator(values);
+    d3.select('g')
+      .append('path')
+      .attr('d', line);
     //Create margins and figure size
-    var margin = { top : 20, right: 20, bottom: 150, left: 40 },
+    /*var margin = { top : 20, right: 20, bottom: 150, left: 40 },
         margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
         width = $("#plot").parent().width() - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
@@ -13,7 +31,7 @@ function FocusPlotContext(data){
      * Then add two g tags to it
      */
 
-    var svg = d3.select("#plot").append("svg")
+   /* var svg = d3.select("#plot").append("svg")
         .attr("position", "relative")
         .attr("width", "100%")
         .attr("height", height + margin2.top + margin.bottom);
@@ -102,7 +120,7 @@ function FocusPlotContext(data){
     plot(values);
 */
 
-var lineGenerator = d3.line();
+/*var lineGenerator = d3.line();
 
 var points = [ [1960,150000],[1965,100000],[1970,150000],[1975,175000],[1980,200000] ];
 
