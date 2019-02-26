@@ -9,6 +9,7 @@ d3.csv("/data/FAO.csv",function(data) {
     FocusPlotContext(dataObject);
 
     $.getJSON("/data/customLow.geo.json",function(wData){
+
       worldMap(dataObject,wData);
     })
 

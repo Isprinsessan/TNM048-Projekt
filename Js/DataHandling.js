@@ -89,27 +89,3 @@ function splitOnAttribute(data, attribute, value)
 	})
 	return splitData;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
