@@ -7,6 +7,9 @@ d3.csv("/data/FAO.csv",function(data) {
   	dataObject =ParseData(data);
   	//console.log(splitOnAttribute(dataObject[0],'Area Code', 2));
     FocusPlotContext(dataObject);
-});
 
-//worldMap();
+    $.getJSON("/data/customLow.geo.json",function(wData){
+      worldMap(dataObject,wData);
+    })
+
+});
