@@ -9,7 +9,7 @@ function FocusPlotContext(data){
 
 
     /*
-     * Select the plot div and append a svg tag
+     * Select the plot div and append a svg tags
      * Then add two g tags to it
      */
 
@@ -104,9 +104,25 @@ function FocusPlotContext(data){
 
 var lineGenerator = d3.line();
 
-var points = [ [10,1960],[20,1965],[30,1970],[40,1975],[45,1980] ];
+var points = [ [1960,150000],[1965,100000],[1970,150000],[1975,175000],[1980,200000] ];
 
 var pathData = lineGenerator(points);
+console.log(pathData);
+
+var g = svg.append("g")
+   .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")"
+   );
+
+
+g.append('path')
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 1.5)
+    .attr("d", pathData);
 
 d3.select('path')
     .attr('d', pathData);
