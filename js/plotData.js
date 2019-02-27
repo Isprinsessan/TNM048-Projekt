@@ -33,6 +33,7 @@ function FocusPlotContext(data)
 
   //
   var maxValue = maxAllYears(data);
+  console.log(maxValue);
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 

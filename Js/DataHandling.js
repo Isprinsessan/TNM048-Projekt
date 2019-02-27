@@ -1,6 +1,6 @@
 
 //Takes in the data and make relevant string into ints and seperates the data into Feed and Food
-function ParseData(data)
+function parseData(data)
 {
 	//Variables
 	var FEED =5521;
@@ -34,6 +34,55 @@ function ParseData(data)
 	return [food,feed];
 }
 
+// Takes in population data and makes digits from strings to ints.
+function parsePopulation(data)
+{
+	data.forEach(function(d)
+	{
+		for(var i =1960; i<=2018;i++)
+		{
+			d[i.toString()] = +d[i.toString()];
+		}
+	});	
+	return data;
+}
+
+// Convert the avaible food in a country to how many avaible kg per capita.
+function convertToPerCapita(food, population)
+{
+	var data = [];
+	//Loop over each food/feed item
+	food.forEach(function(f)
+	{
+		var country =null;
+		//Find cooresponding country
+		for(var i = 0; i<population.length; i++)
+		{
+			if(f["Area Abbreviation"] == population[i]["Country Code"])
+			{
+				country = population[i];
+				break;
+			}
+		}
+		//If country is found tranform to kg per capita and store in a new array
+		if(country!= null)
+		{
+			for(var i =1961; i<=2013;i++)
+			{
+				//If no population data is found set to 
+				if(i.toString()>1)
+				{
+					f["Y"+i] =(f["Y"+i]*1000*1000)/country[i.toString()];
+				}else{
+					f["Y"+i] =0;
+				}	
+			}
+			data.push(f);
+		}
+		
+	});
+	return data;
+}
 
 //Return the max value for all years for the data that is send into the function
 function maxAllYears(data)
@@ -43,7 +92,7 @@ function maxAllYears(data)
 	{
 		for(var i =1961; i<=2013;i++)
 		{
-			if(max <d["Y"+i])
+			if(max <d["Y"+i] && d["Y"+i] !=Infinity )
 			{
 				max = d["Y"+i];
 			}
@@ -74,7 +123,7 @@ function maxValueYears(data, minYear, maxYear)
 	return maxYears;
 }
 
-
+//Given an attribte and a value, split the string so only those values are returned.
 function splitOnAttribute(data, attribute, value)
 {
 	var splitData = [];
@@ -88,8 +137,9 @@ function splitOnAttribute(data, attribute, value)
 
 	})
 	return splitData;
-}
 
+}
+//Transform the data to year and value so it could be intrepered into a line.
 function getYearAndValues(data)
 {
 	var result = [];
