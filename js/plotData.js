@@ -5,7 +5,7 @@ function ParseDataForPlot(data){
 }
 
 
-function FocusPlotContext(data, label)
+function FocusPlotContext(data, label, meanLines)
 {
 
 
@@ -49,10 +49,10 @@ function FocusPlotContext(data, label)
 
 
   //Skapa linjen av datum och värde
-  for(var i = 0; i < data.length; i++)
+  for(var i = 0; i <meanLines.length; i++)
   {
-      var currentData = getYearAndValues(data[i]);
-
+      //var currentData = getYearAndValues(data[i]);
+      var currentData = meanLines[i];
       var line = d3.line()
          .x(function(d) { return x(parseDate(d.year))})
          .y(function(d) { return y(d.value)})
@@ -76,9 +76,17 @@ function FocusPlotContext(data, label)
           .attr("text-anchor", "end")
           .text("Amount (kg)");
 
+      focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "red")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
 
       //Skapa linjen
-      if(label[i] ==NOISE)
+      /*if(label[i] ==NOISE)
       {
         focus.append("path")
          .datum(currentData)
@@ -133,7 +141,7 @@ function FocusPlotContext(data, label)
          .attr("stroke-linecap", "round")
          .attr("stroke-width", 1.5)
          .attr("d", line);
-      }
+      }*/
       
   }
 

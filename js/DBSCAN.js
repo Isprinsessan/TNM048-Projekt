@@ -52,31 +52,9 @@ function DBSCAN(data, eps, minPts)
 	}
 	return label;
 }
-// DBSCAN(DB, distFunc, eps, minPts) {
-//    C = 0                                                  /* Cluster counter */
-//    for each point P in database DB {
-//       if label(P) ≠ undefined then continue               /* Previously processed in inner loop */
-//       Neighbors N = RangeQuery(DB, distFunc, P, eps)      /* Find neighbors */
-//       if |N| < minPts then {                              /* Density check */
-//          label(P) = Noise                                 /* Label as Noise */
-//          continue
-//       }
-//       C = C + 1                                           /* next cluster label */
-//       label(P) = C                                        /* Label initial point */
-//       Seed set S = N \ {P}                                /* Neighbors to expand */
-//       for each point Q in S {                             /* Process every seed point */
-//          if label(Q) = Noise then label(Q) = C            /* Change Noise to border point */
-//          if label(Q) ≠ undefined then continue            /* Previously processed */
-//          label(Q) = C                                     /* Label neighbor */
-//          Neighbors N = RangeQuery(DB, distFunc, Q, eps)   /* Find neighbors */
-//          if |N| ≥ minPts then {                           /* Density check */
-//             S = S ∪ N                                     /* Add new neighbors to seed set */
-//          }
-//       }
-//    }
-// }
 
 
+//Find all neighbors that is closer than the eps
 function findNeighbours(data,point, eps)
 {
 	var neighbors = [];
@@ -102,6 +80,7 @@ function findNeighbours(data,point, eps)
 }
 
 
+//Get the eucleadian distance for every year
 function euclideanDist(point1, point2)
 {
 	var sum =0;
@@ -114,16 +93,45 @@ function euclideanDist(point1, point2)
 }
 
 
+function CalulateMeanLines(data, label)
+{
+	var lines =[];
+	//Check how many different labels there are
+	var max = 0;
+	label.forEach(function(d)
+	{
+		if(d>max && d != NOISE)
+		{
+			max = d;
+		}
+	})
 
+	for(var i=1; i<=max; i++)
+	{
+		var sum = new Array(data.length).fill(0);
+		var counter = 0;
+		for(var j =0; j<data.length; j++)
+		{
+			if(label[j] ==i)
+			{
 
-
-
-// RangeQuery(DB, distFunc, Q, eps) {
-//    Neighbors = empty list
-//    for each point P in database DB {                      /* Scan all points in the database */
-//       if distFunc(Q, P) ≤ eps then {                      /* Compute distance and check epsilon */
-//          Neighbors = Neighbors ∪ {P}                      /* Add to result */
-//       }
-//    }
-//    return Neighbors
-// }
+				counter++;
+				for(var y=1961; y<=2013; y++)
+				{
+					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
+				}
+			}
+		}
+		var result = [];
+		for(var y=1961; y<=2013; y++)
+		{
+			result.push(
+			{
+				value: sum[y-1961]/counter,
+				year: y
+			});
+		}
+		lines.push(result)
+	}
+	return lines;
+}
