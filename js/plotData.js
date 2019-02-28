@@ -5,7 +5,7 @@ function ParseDataForPlot(data){
 }
 
 
-function FocusPlotContext(data)
+function FocusPlotContext(data, label)
 {
 
 
@@ -78,7 +78,18 @@ function FocusPlotContext(data)
 
 
       //Skapa linjen
-      focus.append("path")
+      if(label[i] ==NOISE)
+      {
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "red")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==1){
+        focus.append("path")
          .datum(currentData)
          .attr("fill", "none")
          .attr("stroke", "steelblue")
@@ -86,6 +97,44 @@ function FocusPlotContext(data)
          .attr("stroke-linecap", "round")
          .attr("stroke-width", 1.5)
          .attr("d", line);
+      }else if(label[i] ==2){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "pink")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==3){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "yellow")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==4){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "green")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==1){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "steelblue")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }
+      
   }
 
   /*

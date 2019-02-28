@@ -35,9 +35,12 @@ d3.queue()
     	dataObject.push(convertToPerCapita(foodFeed[1], population));
     	//Get a ceertain attribute from the data
     	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2511);
-    	console.log(foodAttribute);
+
+    	var label =DBSCAN(foodAttribute,200,5);
     	//Plot the data
-    	ParseDataForPlot(foodAttribute);
+    	FocusPlotContext(foodAttribute, label);
+
+
 
 
 	    $.getJSON("/data/customLow.geo.json",function(wData){
