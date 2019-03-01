@@ -1,4 +1,4 @@
-function FocusPlotContext(data, meanLines, index)
+function FocusPlotContext(data, meanLines)
 {
 
   //Create margin, width and height variables for the plots
@@ -45,6 +45,7 @@ function FocusPlotContext(data, meanLines, index)
 
   //Get the max value in data
   var maxValue = maxAllYears(data);
+
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -57,17 +58,16 @@ function FocusPlotContext(data, meanLines, index)
   contextX.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
   contextY.domain([0 ,maxValue]);
 
-
   //Create x-axis for the context plot
   context.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", "translate (0 , " + height2 + ")")
       .call(d3.axisBottom(contextX));
 
-      console.log(meanLines);
-  // Show clusters
+  //Call the function to create the cluster plot
   createClusterPlot(meanLines);
 
+  //Create cluster plot function
   function createClusterPlot(meanLines)
   {
 
@@ -95,9 +95,13 @@ function FocusPlotContext(data, meanLines, index)
         .attr("text-anchor", "end")
         .text("Clustertext");
 
+    //Loop through all lines in the data and
     for(var i = 0; i <meanLines.length; i++)
     {
+        //Get the year and value for the current point in the data
         var currentData = meanLines[i].line;
+
+        //Create the line from the years and the values
         var line = d3.line()
            .x(function(d) { return clusterX(parseDate(d.year))})
            .y(function(d) { return clusterY(d.value)})
@@ -115,11 +119,18 @@ function FocusPlotContext(data, meanLines, index)
 
     }
 
+    //Update the click functions
     updateClick(data, meanLines);
+
   }
-//Show lines for the selected data
+
+  //Variable to make sure that the focus plot is created at start
+  var index = -1;
+
+  //Call function to create the focus plot
   createFocusPlot(data, meanLines, index);
 
+  //Create focus plot function
   function createFocusPlot(data, meanLines, index)
   {
 
@@ -147,6 +158,8 @@ function FocusPlotContext(data, meanLines, index)
         .attr("text-anchor", "end")
         .text("Amount (kg)");
 
+    //If it is the first time the function is called, loop through all the data
+    //else only loop through the specifik data
     if(index == -1)
     {
       for(var i = 0; i <data.length; i++)
@@ -172,10 +185,14 @@ function FocusPlotContext(data, meanLines, index)
     else {
 
       var indices = meanLines[index].index;
-      console.log(indices);
+
       for(var i = 0; i <indices.length; i++)
       {
+
+          //Get the year and values for the current point in the data
           var currentData = getYearAndValues(data[indices[i]]);
+
+          //Create the line from the year and specified value
           var line = d3.line()
              .x(function(d) { return x(parseDate(d.year))})
              .y(function(d) { return y(d.value)})
@@ -194,10 +211,12 @@ function FocusPlotContext(data, meanLines, index)
       }
     }
 
+    //Update click functions
     updateClick(data, meanLines);
 
   }
 
+  //Call click functions
   updateClick(data, meanLines);
 
   //Select all the created lines
@@ -219,12 +238,12 @@ function FocusPlotContext(data, meanLines, index)
   //Variable to save the original width of the line
   var originalWidth = 0;
 
+  //Mouse over function
   function mouseOver(selected_lines)
   {
+      //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
-          hej = d3.select(this).attr("id")
-          console.log(hej);
 
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
@@ -236,8 +255,11 @@ function FocusPlotContext(data, meanLines, index)
       });
   }
 
+  //Mouse out function
   function mouseOut(selected_lines)
   {
+
+      //On mouse out return to the original width of the line
       selected_lines.on("mouseout", function(d){
 
           //Return line to original state
@@ -246,14 +268,20 @@ function FocusPlotContext(data, meanLines, index)
       });
   }
 
+  //On mouse click function
   function mouseClick(selected_lines, data, meanLines)
   {
 
+      //On mouse click, change the data shown in the focus plot
       selected_lines.on("click", function(d){
 
+          //Get the index of the lines
           idx = d3.select(this).attr("id");
 
+          //Remove all the earlier lines in the plots
           d3.selectAll("path").remove();
+
+          //Replot the plots
           createClusterPlot(meanLines);
           createFocusPlot(data, meanLines, idx);
       });
