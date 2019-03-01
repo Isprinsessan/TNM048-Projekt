@@ -5,7 +5,7 @@ function ParseDataForPlot(data){
 }
 
 
-function FocusPlotContext(data)
+function FocusPlotContext(data, label, meanLines)
 {
 
 
@@ -33,6 +33,7 @@ function FocusPlotContext(data)
 
   //
   var maxValue = maxAllYears(data);
+  console.log(maxValue);
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -48,10 +49,10 @@ function FocusPlotContext(data)
 
 
   //Skapa linjen av datum och värde
-  for(var i = 0; i < data.length; i++)
+  for(var i = 0; i <meanLines.length; i++)
   {
-      var currentData = getYearAndValues(data[i]);
-
+      //var currentData = getYearAndValues(data[i]);
+      var currentData = meanLines[i];
       var line = d3.line()
          .x(function(d) { return x(parseDate(d.year))})
          .y(function(d) { return y(d.value)})
@@ -76,8 +77,28 @@ function FocusPlotContext(data)
           .text("Amount (kg)");
 
 
-      //Skapa linjen
       focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "red")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+
+      //Skapa linjen
+      /*if(label[i] ==NOISE)
+      {
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "red")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==1){
+        focus.append("path")
          .datum(currentData)
          .attr("fill", "none")
          .attr("stroke", "steelblue")
@@ -85,6 +106,44 @@ function FocusPlotContext(data)
          .attr("stroke-linecap", "round")
          .attr("stroke-width", 1.5)
          .attr("d", line);
+      }else if(label[i] ==2){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "pink")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==3){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "yellow")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==4){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "green")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }else if(label[i] ==1){
+        focus.append("path")
+         .datum(currentData)
+         .attr("fill", "none")
+         .attr("stroke", "steelblue")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+      }*/
+      
   }
 
   /*
