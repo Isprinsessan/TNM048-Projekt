@@ -40,7 +40,6 @@ function FocusPlotContext(data, label, meanLines)
 
   //Get the max value in data
   var maxValue = maxAllYears(data);
-  console.log(maxValue);
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -84,7 +83,6 @@ function FocusPlotContext(data, label, meanLines)
       .text("Amount (kg)");
 
   //Skapa linjen av datum och värde
-  console.log(meanLines);
   for(var i = 0; i <meanLines.length; i++)
   {
       //var currentData = getYearAndValues(data[i]);

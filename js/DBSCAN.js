@@ -135,7 +135,6 @@ function CalulateMeanLines(data, label)
 		lines.push(result)
 	}
 	//Push noise to lines
-	console.log(data);
 	for(var j =0; j<data.length; j++)
 	{
 
