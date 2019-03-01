@@ -6,8 +6,8 @@ function FocusPlotContext(data, label, meanLines)
       margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
       width = $("#plot").parent().width() - margin.left - margin.right,
       widthCluster = $("#clusterPlot").parent().width() - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom,
-      height2 = 200 - margin2.top - margin2.bottom;
+      height = 400 - margin.top - margin.bottom,
+      height2 = 155 - margin2.top - margin2.bottom;
 
   //Apply svg tag to plot div
   var svg = d3.select("#plot").append("svg")
@@ -132,21 +132,25 @@ function FocusPlotContext(data, label, meanLines)
          .attr("stroke-width", 1.5)
          .attr("d", line);
 
-       /*
-       //Create the lines in the context plot
-       var contextLine = d3.line()
-          .x(function(d) { return contextX(parseDate(d.year))})
-          .y(function(d) { return contextY(parseDate(d.value))})
+  }
 
-        context.append("path")
-            .datum(currentData)
-            .attr("fill", "none")
-            .attr("stroke", "#" + (3*i) + "f")
-            .attr("stroke-linejoin", "round")
-            .attr("stoke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .attr("d", contextLine);
-        */
+  selected_lines = d3.selectAll("path");
+
+
+  mouseOver(selected_lines);
+
+  console.log(selected_lines);
+
+  function mouseOver(selected_lines)
+  {
+      selected_lines.on("mouseover", function(d)
+      {
+
+          //Rescale the lines on hover
+          d3.select(this).attr('stroke-width', 5);
+
+
+      });
   }
 
 }
