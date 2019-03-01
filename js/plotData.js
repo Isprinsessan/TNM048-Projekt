@@ -1,4 +1,4 @@
-function FocusPlotContext(data, label, meanLines, nrOfCluster)
+function FocusPlotContext(data, meanLines, index,nrOfCluster)
 {
   //Create colors for lines.
   var colors = colorbrewer.Set3[nrOfCluster];
@@ -9,8 +9,8 @@ function FocusPlotContext(data, label, meanLines, nrOfCluster)
       margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
       width = $("#plot").parent().width() - margin.left - margin.right,
       widthCluster = $("#clusterPlot").parent().width() - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom,
-      height2 = 200 - margin2.top - margin2.bottom;
+      height = 400 - margin.top - margin.bottom,
+      height2 = 155 - margin2.top - margin2.bottom;
 
   //Apply svg tag to plot div
   var svg = d3.select("#plot").append("svg")
@@ -117,40 +117,128 @@ function FocusPlotContext(data, label, meanLines, nrOfCluster)
 
 
   // Show clusters
-  for(var i = 0; i <meanLines.length; i++)
-  {
-      var currentData = meanLines[i].line;
-      var line = d3.line()
-         .x(function(d) { return clusterX(parseDate(d.year))})
-         .y(function(d) { return clusterY(d.value)})
 
-      //Add the line to the plot
-      cluster.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", colors[meanLines[i].color])
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", Math.sqrt(0.5*meanLines[i].index.length))
-         .attr("d", line);
-  }
+    for(var i = 0; i <meanLines.length; i++)
+    {
+        var currentData = meanLines[i].line;
+        var line = d3.line()
+           .x(function(d) { return clusterX(parseDate(d.year))})
+           .y(function(d) { return clusterY(d.value)})
+
+        //Add the line to the plot
+        cluster.append("path")
+           .datum(currentData)
+           .attr("fill", "none")
+           .attr("stroke", "red")
+           .attr("stroke-linejoin", "round")
+           .attr("stroke-linecap", "round")
+           .attr("stroke-width", Math.sqrt(0.1*meanLines[i].index.length))
+           .attr("d", line)
+           .attr("id", i);
+
+    }
+
 //Show lines for the selected data
-  for(var i = 0; i <data.length; i++)
-  {
-      var currentData = getYearAndValues(data[i]);
-      var line = d3.line()
-         .x(function(d) { return x(parseDate(d.year))})
-         .y(function(d) { return y(d.value)})
 
-      //Add the line to the plot
-      focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "red")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.0)
-         .attr("d", line);
+
+    if(index == -1)
+    {
+      for(var i = 0; i <data.length; i++)
+      {
+          var currentData = getYearAndValues(data[i]);
+          var line = d3.line()
+             .x(function(d) { return x(parseDate(d.year))})
+             .y(function(d) { return y(d.value)})
+
+          //Add the line to the plot
+          focus.append("path")
+             .datum(currentData)
+             .attr("fill", "none")
+             .attr("stroke", "red")
+             .attr("stroke-linejoin", "round")
+             .attr("stroke-linecap", "round")
+             .attr("stroke-width", 1.0)
+             .attr("d", line)
+             .attr("id", i);
+
+      }
+    }
+    else {
+
+      var indices = meanLines[index].index;
+      for(var i = 0; i <indices.length; i++)
+      {
+          var currentData = getYearAndValues(data[indices[i]]);
+          var line = d3.line()
+             .x(function(d) { return x(parseDate(d.year))})
+             .y(function(d) { return y(d.value)})
+
+          //Add the line to the plot
+          focus.append("path")
+             .datum(currentData)
+             .attr("fill", "none")
+             .attr("stroke", "red")
+             .attr("stroke-linejoin", "round")
+             .attr("stroke-linecap", "round")
+             .attr("stroke-width", 1.0)
+             .attr("d", line)
+             .attr("id", i);
+
+      }
+    }
+
+
+  //Select all the created lines
+  selected_lines = d3.selectAll("path");
+
+  //Mouse over function
+  mouseOver(selected_lines);
+  //Mouse out function
+  mouseOut(selected_lines);
+  //Mouse click function
+  mouseClick(selected_lines, data, meanLines, nrOfCluster);
+
+  //Variable to save the original width of the line
+  var originalWidth = 0;
+
+  function mouseOver(selected_lines)
+  {
+      selected_lines.on("mouseover", function(d)
+      {
+          hej = d3.select(this).attr("id")
+
+          //Store the original width
+          originalWidth = d3.select(this).attr('stroke-width');
+
+          //Rescale the line on hover
+          d3.select(this).attr('stroke-width', 5);
+
+
+      });
+  }
+
+  function mouseOut(selected_lines)
+  {
+      selected_lines.on("mouseout", function(d){
+
+          //Return line to original state
+          d3.select(this).attr('stroke-width', originalWidth);
+
+      });
+  }
+
+  function mouseClick(selected_lines, data, meanLines)
+  {
+
+      selected_lines.on("click", function(d){
+
+          idx = d3.select(this).attr("id");
+          d3.selectAll("svg").remove();
+          FocusPlotContext(data, meanLines, idx, nrOfCluster);
+      });
+
+
+
   }
 
 }

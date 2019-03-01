@@ -28,7 +28,8 @@ d3.queue()
     	mLines =CalulateMeanLines(foodAttribute, label);
     	meanLines = mLines.lines;
       //Plot the data
-    	FocusPlotContext(foodAttribute, label, meanLines, mLines.nrOfCluster);
+
+    	FocusPlotContext(foodAttribute, meanLines, -1,mLines.nrOfCluster);
 
 	    $.getJSON("/data/customLow.geo.json",function(wData){
 	      worldMap(dataObject,wData);
