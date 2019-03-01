@@ -36,24 +36,3 @@ d3.queue()
 	    })
     }
 });
-
-
-
-
-
-/*d3.csv("/data/FAO.csv",function(data) {
-    //Parse the data into something useful. The data is split into 2 part, Food and Feed
-    //dataObject[0] is all food objects and dataObject[1] is all feed objects
-    dataObject =ParseData(data);
-    var wheat =splitOnAttribute(dataObject[0],'Item Code', 2560);
-
-    ParseDataForPlot(wheat);
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
-
-
-    $.getJSON("/data/customLow.geo.json",function(wData){
-
-      worldMap(dataObject,wData);
-    })
-
-});*/

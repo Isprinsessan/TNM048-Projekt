@@ -137,7 +137,9 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           newData.push(data[d]);
         })
         maxValue = maxAllYears(newData);
+
     }
+    focus.select("svg").remove();
     //Set axes and domain for the focus plot
     var x = d3.scaleTime().rangeRound([0, width]);
     var y = d3.scaleLinear().rangeRound([height, 0]);
