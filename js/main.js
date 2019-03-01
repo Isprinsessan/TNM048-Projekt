@@ -1,6 +1,9 @@
 
 
+
+
 var dataObject =[];
+var meanLines = [];
 
 d3.queue()
 .defer(d3.csv, "/data/FAO.csv")
@@ -19,14 +22,14 @@ d3.queue()
       //Convert both Food and Feed to kg per capita
     	dataObject.push(convertToPerCapita(foodFeed[0], population));
     	dataObject.push(convertToPerCapita(foodFeed[1], population));
-    	
+
       //Get a ceertain attribute from the data
     	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2511);
 
 
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,200,5);
-    	var meanLines =CalulateMeanLines(foodAttribute, label);
+    	meanLines =CalulateMeanLines(foodAttribute, label);
 
       //Plot the data
     	FocusPlotContext(foodAttribute, label, meanLines);
@@ -47,7 +50,6 @@ d3.queue()
     dataObject =ParseData(data);
     var wheat =splitOnAttribute(dataObject[0],'Item Code', 2560);
 
->>>>>>> 8d1f3a73fb62e609875c37eb8bfcd1bc10ac4509
     ParseDataForPlot(wheat);
 >>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
 
