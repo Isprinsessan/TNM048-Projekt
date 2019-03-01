@@ -1,10 +1,24 @@
+/*
+Author: Daniel Olsson
+Last Updated: 2019-03-01
+Description:
+This file handles the data mining with the DBSCAN technique. There are
+two major function and it is DBSCAN which runs the data mining and
+CalulateMeanLines that calculates the mean line for each cluster inclusive
+the Noise lines
+*/
 
-//Here the Data mining teqniq will be displayed
-
-//Here the Data mining teqniq will be displayed
+//Constant variables
 var NOISE = 999;
 var ALPHA = 0.001;
-//Function that runs the DBSAN, returns
+
+//The DBSCAN algoritm which calulates the clusters. 
+//data: The data that will be evaluate
+//eps: The max distance between the lines
+//minPts: The minimum nr of lines to be classified as a cluster.
+//
+//Returns Label which is same size as data and contains which cluster each line balongs to.
+// If the lines is considered as a NOISE it gets value 999.
 function DBSCAN(data, eps, minPts)
 {
 	//Set label variable
@@ -139,7 +153,8 @@ function CalulateMeanLines(data, label)
 		}
 		lines.push({
 			line: result,
-			index: indexCheck
+			index: indexCheck,
+			color: i
 		})
 	}
 	//Push noise to lines
@@ -160,11 +175,15 @@ function CalulateMeanLines(data, label)
 			lines.push(
 			{
 				line: result,
-				index: [j]
+				index: [j],
+				color: 0
 
 			});
 		}
 
 	}
-	return lines;
+	return {
+		lines: lines,
+		nrOfCluster: max
+	}
 }

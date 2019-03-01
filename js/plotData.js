@@ -1,5 +1,8 @@
-function FocusPlotContext(data, meanLines)
+function FocusPlotContext(data, meanLines,nrOfCluster)
 {
+  //Create colors for lines.
+  var colors = colorbrewer.Set3[nrOfCluster];
+
 
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 150, left: 40 },
@@ -52,17 +55,24 @@ function FocusPlotContext(data, meanLines)
   //Get the data for the max and min values of the axes
   var axisData = getYearAndValues(data[0]);
 
-  //Set axes and domain for the context plot
-  var contextX = d3.scaleTime().rangeRound([0, width]);
-  var contextY = d3.scaleLinear().rangeRound([0, height2]);
-  contextX.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
-  contextY.domain([0 ,maxValue]);
+  //Call the function to plot the context plot
+  createContextPlot();
 
-  //Create x-axis for the context plot
-  context.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate (0 , " + height2 + ")")
-      .call(d3.axisBottom(contextX));
+  //Create context plot function
+  function createContextPlot()
+  {
+      //Set axes and domain for the context plot
+      var contextX = d3.scaleTime().rangeRound([0, width]);
+      var contextY = d3.scaleLinear().rangeRound([0, height2]);
+      contextX.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
+      contextY.domain([0 ,maxValue]);
+
+      //Create x-axis for the context plot
+      context.append("g")
+          .attr("class", "axis axis--x")
+          .attr("transform", "translate (0 , " + height2 + ")")
+          .call(d3.axisBottom(contextX));
+  }
 
   //Call the function to create the cluster plot
   createClusterPlot(meanLines);
@@ -133,6 +143,21 @@ function FocusPlotContext(data, meanLines)
   //Create focus plot function
   function createFocusPlot(data, meanLines, index)
   {
+
+    var newData = [];
+    var maxValue =0;
+
+    if(index == -1)
+    {
+       maxValue = maxAllYears(data);
+     }else{
+
+        meanLines[index].index.forEach(function(d)
+        {
+          newData.push(data[d]);
+        })
+        maxValue = maxAllYears(newData);
+    }
 
     //Set axes and domain for the focus plot
     var x = d3.scaleTime().rangeRound([0, width]);
@@ -280,10 +305,13 @@ function FocusPlotContext(data, meanLines)
 
           //Remove all the earlier lines in the plots
           d3.selectAll("path").remove();
+          //d3.selectAll("text").remove();
+          d3.selectAll(".axis--y").remove();
 
           //Replot the plots
           createClusterPlot(meanLines);
           createFocusPlot(data, meanLines, idx);
+          createContextPlot();
       });
 
   }
