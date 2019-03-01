@@ -1,10 +1,24 @@
+/*
+Author: Daniel Olsson
+Last Updated: 2019-03-01
+Description:
+This file handles the data mining with the DBSCAN technique. There are
+two major function and it is DBSCAN which runs the data mining and
+CalulateMeanLines that calculates the mean line for each cluster inclusive
+the Noise lines
+*/
 
-//Here the Data mining teqniq will be displayed
-
-//Here the Data mining teqniq will be displayed
+//Constant variables
 var NOISE = 999;
 var ALPHA = 0.001;
-//Function that runs the DBSAN, returns
+
+//The DBSCAN algoritm which calulates the clusters. 
+//data: The data that will be evaluate
+//eps: The max distance between the lines
+//minPts: The minimum nr of lines to be classified as a cluster.
+//
+//Returns Label which is same size as data and contains which cluster each line balongs to.
+// If the lines is considered as a NOISE it gets value 999.
 function DBSCAN(data, eps, minPts)
 {
 	//Set label variable
@@ -111,20 +125,23 @@ function CalulateMeanLines(data, label)
 
 	for(var i=1; i<=max; i++)
 	{
+		//Sum over all years
 		var sum = new Array(data.length).fill(0);
 		var counter = 0;
+		var indexCheck = [];
 		for(var j =0; j<data.length; j++)
 		{
 			if(label[j] ==i)
 			{
-
 				counter++;
 				for(var y=1961; y<=2013; y++)
 				{
 					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
 				}
+				indexCheck.push(j);
 			}
 		}
+		//Calculate the mean value for each year		
 		var result = [];
 		for(var y=1961; y<=2013; y++)
 		{
@@ -134,7 +151,39 @@ function CalulateMeanLines(data, label)
 				year: y
 			});
 		}
-		lines.push(result)
+		lines.push({
+			line: result,
+			index: indexCheck,
+			color: i
+		})
 	}
-	return lines;
+	//Push noise to lines
+	for(var j =0; j<data.length; j++)
+	{
+
+		if(label[j] ==NOISE)
+		{
+			var result = [];
+			for(var y=1961; y<=2013; y++)
+			{
+				result.push(
+				{
+					value: data[j]["Y"+y],
+					year: y
+				});
+			}
+			lines.push(
+			{
+				line: result,
+				index: [j],
+				color: 0
+
+			});
+		}
+
+	}
+	return {
+		lines: lines,
+		nrOfCluster: max
+	}
 }
