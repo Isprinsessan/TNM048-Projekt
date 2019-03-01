@@ -126,12 +126,13 @@ function FocusPlotContext(data, label, meanLines)
       focus.append("path")
          .datum(currentData)
          .attr("fill", "none")
-         .attr("stroke", "#"+ (3*i) +"f")
+         .attr("stroke", "red")
          .attr("stroke-linejoin", "round")
          .attr("stroke-linecap", "round")
          .attr("stroke-width", 1.5)
          .attr("d", line);
 
+       /*
        //Create the lines in the context plot
        var contextLine = d3.line()
           .x(function(d) { return contextX(parseDate(d.year))})
@@ -145,7 +146,7 @@ function FocusPlotContext(data, label, meanLines)
             .attr("stoke-linecap", "round")
             .attr("stroke-width", 1.5)
             .attr("d", contextLine);
-
+        */
   }
 
 }

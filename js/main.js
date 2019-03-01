@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 07a9bb03b8ef228214691a1726459018eb087782
 var dataObject =[];
 
 d3.queue()
@@ -21,10 +26,10 @@ d3.queue()
       //Get a ceertain attribute from the data
     	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2511);
 
+
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,100,4);
     	var meanLines =CalulateMeanLines(foodAttribute, label);
-
 
       //Plot the data
     	FocusPlotContext(foodAttribute, label, meanLines);
