@@ -1,26 +1,22 @@
-<<<<<<< HEAD
-function FocusPlotContext(data)
-=======
-function ParseDataForPlot(data){
-
-  FocusPlotContext(data);
-
-}
-
-
 function FocusPlotContext(data, label, meanLines)
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
 {
 
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 150, left: 40 },
       margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
       width = $("#plot").parent().width() - margin.left - margin.right,
+      widthCluster = $("#clusterPlot").parent().width() - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom,
       height2 = 200 - margin2.top - margin2.bottom;
 
-  //Appy svg tag to plot div
+  //Apply svg tag to plot div
   var svg = d3.select("#plot").append("svg")
+      .attr("position", "relative")
+      .attr("width", "100%")
+      .attr("height", height + margin2.top + margin.bottom);
+
+  //Apply svg tag to cluster plot div
+  var svg2 = d3.select("#clusterPlot").append("svg")
       .attr("position", "relative")
       .attr("width", "100%")
       .attr("height", height + margin2.top + margin.bottom);
@@ -42,13 +38,14 @@ function FocusPlotContext(data, label, meanLines)
       .attr("class", "context")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  //Create the cluster plot
+  var cluster = svg2.append("g")
+      .attr("class", "cluster")
+      .attr("transform", "translate(" + margin2.left + "," + margin2.top +  ")");
+
   //Get the max value in data
   var maxValue = maxAllYears(data);
-<<<<<<< HEAD
 
-=======
-  console.log(maxValue);
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -66,6 +63,12 @@ function FocusPlotContext(data, label, meanLines)
   var contextY = d3.scaleLinear().rangeRound([0, height2]);
   contextX.domain(x.domain());
   contextY.domain(y.domain());
+
+  //Set axes and domain for the cluster plot
+  var clusterX = d3.scaleTime().rangeRound([0, widthCluster]);
+  var clusterY = d3.scaleLinear().rangeRound([height, 0]);
+  clusterX.domain(x.domain());
+  clusterY.domain(y.domain());
 
   //Create x-axis for the context plot
   context.append("g")
@@ -91,126 +94,58 @@ function FocusPlotContext(data, label, meanLines)
       .attr("text-anchor", "end")
       .text("Amount (kg)");
 
-<<<<<<< HEAD
-  //Create one line for each country
-  for(var i = 0; i < data.length; i++)
-  {
+  //Create x-axis for the cluster plot
+  cluster.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate (0 , " + height + ")")
+      .call(d3.axisBottom(clusterX));
 
-      //Get the year and value from the dataset
-      var currentData = getYearAndValues(data[i]);
+  //Create y-axis for the cluster plot
+  cluster.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(clusterY))
+      .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("Clustertext");
 
-      //Create a line
-=======
 
-  //Skapa linjen av datum och värde
+  //Create the line by date and value
   for(var i = 0; i <meanLines.length; i++)
   {
       //var currentData = getYearAndValues(data[i]);
       var currentData = meanLines[i];
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
       var line = d3.line()
          .x(function(d) { return x(parseDate(d.year))})
          .y(function(d) { return y(d.value)})
 
-<<<<<<< HEAD
       //Add the line to the plot
       focus.append("path")
          .datum(currentData)
          .attr("fill", "none")
          .attr("stroke", "#"+ (3*i) +"f")
-=======
-
-      //Skapa x-axeln
-      focus.append("g")
-          .attr("class", "axis axis--x")
-          .attr("transform", "translate (0 , " + height  + ")")
-          .call(d3.axisBottom(x));
-
-      //Skapa y-axeln
-      focus.append("g")
-          .attr("class", "axis axis--y")
-          .call(d3.axisLeft(y))
-          .append("text")
-          .attr("fill", "#000")
-          .attr("transform", "rotate(-90)")
-          .attr("y", 6)
-          .attr("dy", "0.71em")
-          .attr("text-anchor", "end")
-          .text("Amount (kg)");
-
-
-      focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "red")
          .attr("stroke-linejoin", "round")
          .attr("stroke-linecap", "round")
          .attr("stroke-width", 1.5)
          .attr("d", line);
 
-      //Skapa linjen
-      /*if(label[i] ==NOISE)
-      {
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "red")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-      }else if(label[i] ==1){
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "steelblue")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-      }else if(label[i] ==2){
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "pink")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-      }else if(label[i] ==3){
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "yellow")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-      }else if(label[i] ==4){
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "green")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-      }else if(label[i] ==1){
-        focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "steelblue")
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
-<<<<<<< HEAD
+       //Create the lines in the context plot
+       var contextLine = d3.line()
+          .x(function(d) { return contextX(parseDate(d.year))})
+          .y(function(d) { return contextY(parseDate(d.value))})
 
-=======
-      }*/
-      
->>>>>>> 706af08f0b599ac38c78e70a3e9ce854c0c8431a
+        context.append("path")
+            .datum(currentData)
+            .attr("fill", "none")
+            .attr("stroke", "#" + (3*i) + "f")
+            .attr("stroke-linejoin", "round")
+            .attr("stoke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .attr("d", contextLine);
+
   }
 
 }
