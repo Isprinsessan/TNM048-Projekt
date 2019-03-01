@@ -1,14 +1,5 @@
 
 
-<<<<<<< HEAD
-d3.csv("/data/FAO.csv",function(data) {
-  	//Parse the data into something useful. The data is split into 2 part, Food and Feed
-  	//dataObject[0] is all food objects and dataObject[1] is all feed objects
-  	dataObject =ParseData(data);
-  	var wheat =splitOnAttribute(dataObject[0],'Item Code', 2511);
-    FocusPlotContext(wheat);
-=======
-
 var dataObject =[];
 
 d3.queue()
@@ -32,10 +23,10 @@ d3.queue()
       //Get a ceertain attribute from the data
     	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2511);
 
+
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,100,4);
     	var meanLines =CalulateMeanLines(foodAttribute, label);
-
 
       //Plot the data
     	FocusPlotContext(foodAttribute, label, meanLines);
