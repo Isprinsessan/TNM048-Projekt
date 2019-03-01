@@ -1,6 +1,3 @@
-
-//Here the Data mining teqniq will be displayed
-
 //Here the Data mining teqniq will be displayed
 var NOISE = 999;
 var ALPHA = 0.001;
@@ -111,13 +108,13 @@ function CalulateMeanLines(data, label)
 
 	for(var i=1; i<=max; i++)
 	{
+		//Sum over all years
 		var sum = new Array(data.length).fill(0);
 		var counter = 0;
 		for(var j =0; j<data.length; j++)
 		{
 			if(label[j] ==i)
 			{
-
 				counter++;
 				for(var y=1961; y<=2013; y++)
 				{
@@ -125,6 +122,7 @@ function CalulateMeanLines(data, label)
 				}
 			}
 		}
+		//Calculate the mean value for each year		
 		var result = [];
 		for(var y=1961; y<=2013; y++)
 		{
@@ -135,6 +133,26 @@ function CalulateMeanLines(data, label)
 			});
 		}
 		lines.push(result)
+	}
+	//Push noise to lines
+	console.log(data);
+	for(var j =0; j<data.length; j++)
+	{
+
+		if(label[j] ==NOISE)
+		{
+			var result = [];
+			for(var y=1961; y<=2013; y++)
+			{
+				result.push(
+				{
+					value: data[j]["Y"+y],
+					year: y
+				});
+			}
+			lines.push(result);
+		}
+
 	}
 	return lines;
 }

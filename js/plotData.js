@@ -84,7 +84,7 @@ function FocusPlotContext(data, label, meanLines)
       .text("Amount (kg)");
 
   //Skapa linjen av datum och värde
-  console.log(meanLines.length);
+  console.log(meanLines);
   for(var i = 0; i <meanLines.length; i++)
   {
       //var currentData = getYearAndValues(data[i]);
