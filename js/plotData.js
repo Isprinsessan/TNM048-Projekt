@@ -1,5 +1,8 @@
-function FocusPlotContext(data, label, meanLines)
+function FocusPlotContext(data, label, meanLines, nrOfCluster)
 {
+  //Create colors for lines.
+  var colors = colorbrewer.Set3[nrOfCluster];
+
 
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 150, left: 40 },
@@ -112,7 +115,7 @@ function FocusPlotContext(data, label, meanLines)
       .attr("text-anchor", "end")
       .text("Clustertext");
 
-      console.log(meanLines);
+
   // Show clusters
   for(var i = 0; i <meanLines.length; i++)
   {
@@ -125,10 +128,10 @@ function FocusPlotContext(data, label, meanLines)
       cluster.append("path")
          .datum(currentData)
          .attr("fill", "none")
-         .attr("stroke", "red")
+         .attr("stroke", colors[meanLines[i].color])
          .attr("stroke-linejoin", "round")
          .attr("stroke-linecap", "round")
-         .attr("stroke-width", Math.sqrt(0.1*meanLines[i].index.length))
+         .attr("stroke-width", Math.sqrt(0.5*meanLines[i].index.length))
          .attr("d", line);
   }
 //Show lines for the selected data

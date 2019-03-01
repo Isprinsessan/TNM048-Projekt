@@ -1,7 +1,3 @@
-
-
-
-
 var dataObject =[];
 var meanLines = [];
 
@@ -29,10 +25,10 @@ d3.queue()
 
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,200,5);
-    	meanLines =CalulateMeanLines(foodAttribute, label);
-
+    	mLines =CalulateMeanLines(foodAttribute, label);
+    	meanLines = mLines.lines;
       //Plot the data
-    	FocusPlotContext(foodAttribute, label, meanLines);
+    	FocusPlotContext(foodAttribute, label, meanLines, mLines.nrOfCluster);
 
 	    $.getJSON("/data/customLow.geo.json",function(wData){
 	      worldMap(dataObject,wData);

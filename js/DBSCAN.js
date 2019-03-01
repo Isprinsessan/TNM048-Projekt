@@ -136,7 +136,8 @@ function CalulateMeanLines(data, label)
 		}
 		lines.push({
 			line: result,
-			index: indexCheck
+			index: indexCheck,
+			color: i
 		})
 	}
 	//Push noise to lines
@@ -157,11 +158,15 @@ function CalulateMeanLines(data, label)
 			lines.push(
 			{
 				line: result,
-				index: [j]
+				index: [j],
+				color: 0
 
 			});
 		}
 
 	}
-	return lines;
+	return {
+		lines: lines,
+		nrOfCluster: max
+	}
 }
