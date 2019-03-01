@@ -111,20 +111,23 @@ function CalulateMeanLines(data, label)
 
 	for(var i=1; i<=max; i++)
 	{
+		//Sum over all years
 		var sum = new Array(data.length).fill(0);
 		var counter = 0;
+		var indexCheck = [];
 		for(var j =0; j<data.length; j++)
 		{
 			if(label[j] ==i)
 			{
-
 				counter++;
 				for(var y=1961; y<=2013; y++)
 				{
 					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
 				}
+				indexCheck.push(j);
 			}
 		}
+		//Calculate the mean value for each year		
 		var result = [];
 		for(var y=1961; y<=2013; y++)
 		{
@@ -134,7 +137,34 @@ function CalulateMeanLines(data, label)
 				year: y
 			});
 		}
-		lines.push(result)
+		lines.push({
+			line: result,
+			index: indexCheck
+		})
+	}
+	//Push noise to lines
+	for(var j =0; j<data.length; j++)
+	{
+
+		if(label[j] ==NOISE)
+		{
+			var result = [];
+			for(var y=1961; y<=2013; y++)
+			{
+				result.push(
+				{
+					value: data[j]["Y"+y],
+					year: y
+				});
+			}
+			lines.push(
+			{
+				line: result,
+				index: [j]
+
+			});
+		}
+
 	}
 	return lines;
 }

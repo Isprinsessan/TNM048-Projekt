@@ -1,4 +1,4 @@
-function FocusPlotContext(data, label, meanLines)
+function FocusPlotContext(data, meanLines, index)
 {
 
   //Create margin, width and height variables for the plots
@@ -45,7 +45,6 @@ function FocusPlotContext(data, label, meanLines)
 
   //Get the max value in data
   var maxValue = maxAllYears(data);
-
   //Parse the dates
   var parseDate = d3.timeParse("%Y");
 
@@ -94,6 +93,7 @@ function FocusPlotContext(data, label, meanLines)
       .attr("text-anchor", "end")
       .text("Amount (kg)");
 
+
   //Create x-axis for the cluster plot
   cluster.append("g")
       .attr("class", "axis axis--x")
@@ -112,45 +112,132 @@ function FocusPlotContext(data, label, meanLines)
       .attr("text-anchor", "end")
       .text("Clustertext");
 
+      console.log(meanLines);
+  // Show clusters
 
-  //Create the line by date and value
-  for(var i = 0; i <meanLines.length; i++)
-  {
-      //var currentData = getYearAndValues(data[i]);
-      var currentData = meanLines[i];
-      var line = d3.line()
-         .x(function(d) { return x(parseDate(d.year))})
-         .y(function(d) { return y(d.value)})
+    for(var i = 0; i <meanLines.length; i++)
+    {
+        var currentData = meanLines[i].line;
+        var line = d3.line()
+           .x(function(d) { return clusterX(parseDate(d.year))})
+           .y(function(d) { return clusterY(d.value)})
 
-      //Add the line to the plot
-      focus.append("path")
-         .datum(currentData)
-         .attr("fill", "none")
-         .attr("stroke", "red")
-         .attr("stroke-linejoin", "round")
-         .attr("stroke-linecap", "round")
-         .attr("stroke-width", 1.5)
-         .attr("d", line);
+        //Add the line to the plot
+        cluster.append("path")
+           .datum(currentData)
+           .attr("fill", "none")
+           .attr("stroke", "red")
+           .attr("stroke-linejoin", "round")
+           .attr("stroke-linecap", "round")
+           .attr("stroke-width", Math.sqrt(0.1*meanLines[i].index.length))
+           .attr("d", line)
+           .attr("id", i);
 
-  }
+    }
 
+//Show lines for the selected data
+
+
+    if(index == -1)
+    {
+      for(var i = 0; i <data.length; i++)
+      {
+          var currentData = getYearAndValues(data[i]);
+          var line = d3.line()
+             .x(function(d) { return x(parseDate(d.year))})
+             .y(function(d) { return y(d.value)})
+
+          //Add the line to the plot
+          focus.append("path")
+             .datum(currentData)
+             .attr("fill", "none")
+             .attr("stroke", "red")
+             .attr("stroke-linejoin", "round")
+             .attr("stroke-linecap", "round")
+             .attr("stroke-width", 1.0)
+             .attr("d", line)
+             .attr("id", i);
+
+      }
+    }
+    else {
+
+      var indices = meanLines[index].index;
+      console.log(indices);
+      for(var i = 0; i <indices.length; i++)
+      {
+          var currentData = getYearAndValues(data[indices[i]]);
+          var line = d3.line()
+             .x(function(d) { return x(parseDate(d.year))})
+             .y(function(d) { return y(d.value)})
+
+          //Add the line to the plot
+          focus.append("path")
+             .datum(currentData)
+             .attr("fill", "none")
+             .attr("stroke", "red")
+             .attr("stroke-linejoin", "round")
+             .attr("stroke-linecap", "round")
+             .attr("stroke-width", 1.0)
+             .attr("d", line)
+             .attr("id", i);
+
+      }
+    }
+
+
+  //Select all the created lines
   selected_lines = d3.selectAll("path");
 
-
+  //Mouse over function
   mouseOver(selected_lines);
+  //Mouse out function
+  mouseOut(selected_lines);
+  //Mouse click function
+  mouseClick(selected_lines, data, meanLines);
 
-  console.log(selected_lines);
+  //Variable to save the original width of the line
+  var originalWidth = 0;
 
   function mouseOver(selected_lines)
   {
       selected_lines.on("mouseover", function(d)
       {
+          hej = d3.select(this).attr("id")
+          console.log(hej);
 
-          //Rescale the lines on hover
+          //Store the original width
+          originalWidth = d3.select(this).attr('stroke-width');
+
+          //Rescale the line on hover
           d3.select(this).attr('stroke-width', 5);
 
 
       });
+  }
+
+  function mouseOut(selected_lines)
+  {
+      selected_lines.on("mouseout", function(d){
+
+          //Return line to original state
+          d3.select(this).attr('stroke-width', originalWidth);
+
+      });
+  }
+
+  function mouseClick(selected_lines, data, meanLines)
+  {
+
+      selected_lines.on("click", function(d){
+
+          idx = d3.select(this).attr("id");
+          console.log(meanLines);
+          FocusPlotContext(data, meanLines, idx);
+      });
+
+
+
   }
 
 }
