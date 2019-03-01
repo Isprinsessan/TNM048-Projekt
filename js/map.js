@@ -1,6 +1,12 @@
+
+var FAODATA;
+var GEODATA;
+var MYMAP;
+var LAYERCOLORS;
 function worldMap(data,worldData) {
 
-
+FAODATA = splitOnAttribute(data[0],'Item Code', 2511);
+GEODATA = worldData;
 
    //Food/Feed, Item Code,Area
 
@@ -23,40 +29,77 @@ function worldMap(data,worldData) {
 */
 var mapboxAccessToken = 'pk.eyJ1IjoiYmFwaXJvIiwiYSI6ImNqc2E0cmRieTAwdmI0NHAzZHV3bzRrbWsifQ.dsocBgqTK1ePHlkx_SQcYQ';
 
-var mymap = L.map('mapid').setView([51.505, -0.09], 1);
+MYMAP = L.map('mapid').setView([51.505, -0.09], 1);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
     id: 'mapbox.light',
     noWrap: true
-}).addTo(mymap);
+}).addTo(MYMAP);
 //  var worldData = new L.geoJSON.AJAX("/Data/custom.geo.json");
-
-L.geoJson(worldData).addTo(mymap);
+//L.geoJson(GEODATA).addTo(MYMAP);
 //split up data to one category
-var split = splitOnAttribute(data[0],'Item Code', 2511);
+addValueGeo(GEODATA,FAODATA,"Y1987");
+LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
+//updateMap(1987);
 
-//add values to geojson
-var year = "Y2009";
-addValueGeo(worldData,split,year);
+var legend = L.control({position: 'bottomright'});
 
-L.geoJson(worldData, {style: style}).addTo(mymap);
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(MYMAP);
+
+
+
 
 }
+function highlightFeature(e) {
+    var layer = e.target;
+  console.log("hej");
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
 
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+}
 
 function addValueGeo(worldData,splitData,year){
-
+  var count = 0;
+  var tempdata = splitData.slice();
   for (var j = 0; j < Object.keys(worldData.features).length; j++) {
       worldData.features[j].properties.value = -1;
-      for(var i = 0; i<splitData.length; i++){
-        if(worldData.features[j].properties.adm0_a3 == splitData[i]['Area Abbreviation'])
+      for(var i = 0; i<tempdata.length; i++){
+
+        if(worldData.features[j].properties.adm0_a3 == tempdata[i]['Area Abbreviation'])
         {
 
-            worldData.features[j].properties.value = splitData[i][year];
+            worldData.features[j].properties.value = tempdata[i][year];
             //console.log(  worldData.features[j].properties.value);
+            tempdata.splice(i,1);
             break;
         }
+        count++;
     }
+
   }
+  console.log(count);
 
 }
 function getColor(d) {
@@ -70,8 +113,17 @@ function getColor(d) {
            d < 0   ? '#D3D3D3' :
                       '#FFEDA0';
 }
+function updateMap(year_in) {
 
-function style(feature) {
+
+  //add values to geojson
+  var year = "Y" + year_in;
+  addValueGeo(GEODATA,FAODATA,year);
+  MYMAP.removeLayer(LAYERCOLORS);
+  LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
+}
+
+function styleColor(feature) {
     return {
         fillColor: getColor(feature.properties.value),
         weight: 2,
