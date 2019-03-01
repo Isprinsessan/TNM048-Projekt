@@ -1,10 +1,10 @@
 /**
- * 
+ *
     Author: Kahin Akram
     Date: Jan 24, 2019
     TNM048 Lab 1 - Visual Information-Seeking Mantra
     Css file
- *  
+ *
 */
 
 .zoom {
@@ -51,9 +51,4 @@
     font-family: sans-serif;
     font-size: 14px;
     line-height: 30px;
-}
-
-path {
-  fill: none;
-  stroke: #999;
 }

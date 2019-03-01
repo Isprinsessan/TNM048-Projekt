@@ -6,7 +6,7 @@ d3.csv("/data/FAO.csv",function(data) {
   	//dataObject[0] is all food objects and dataObject[1] is all feed objects
   	dataObject =ParseData(data);
   	var wheat =splitOnAttribute(dataObject[0],'Item Code', 2511);
-    ParseDataForPlot(wheat);
+    FocusPlotContext(wheat);
 
 
     $.getJSON("/data/customLow.geo.json",function(wData){
