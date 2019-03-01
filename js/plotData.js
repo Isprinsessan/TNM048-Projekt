@@ -157,6 +157,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           newData.push(data[d]);
         })
         maxValue = maxAllYears(newData);
+
     }
 
     //Set axes and domain for the focus plot
