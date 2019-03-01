@@ -84,6 +84,7 @@ function FocusPlotContext(data, label, meanLines)
       .text("Amount (kg)");
 
   //Skapa linjen av datum och värde
+  console.log(meanLines.length);
   for(var i = 0; i <meanLines.length; i++)
   {
       //var currentData = getYearAndValues(data[i]);
@@ -96,7 +97,12 @@ function FocusPlotContext(data, label, meanLines)
       focus.append("path")
          .datum(currentData)
          .attr("fill", "none")
-         .attr("stroke", "#"+ (3*i) +"f")
+         .attr("stroke", "red")
+         .attr("stroke-linejoin", "round")
+         .attr("stroke-linecap", "round")
+         .attr("stroke-width", 1.5)
+         .attr("d", line);
+
   }
 
 }
