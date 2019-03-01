@@ -51,23 +51,12 @@ function FocusPlotContext(data, meanLines, index)
   //Get the data for the max and min values of the axes
   var axisData = getYearAndValues(data[0]);
 
-  //Set axes and domain for the focus plot
-  var x = d3.scaleTime().rangeRound([0, width]);
-  var y = d3.scaleLinear().rangeRound([height, 0]);
-  x.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
-  y.domain([0 ,maxValue]);
-
   //Set axes and domain for the context plot
   var contextX = d3.scaleTime().rangeRound([0, width]);
   var contextY = d3.scaleLinear().rangeRound([0, height2]);
-  contextX.domain(x.domain());
-  contextY.domain(y.domain());
+  contextX.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
+  contextY.domain([0 ,maxValue]);
 
-  //Set axes and domain for the cluster plot
-  var clusterX = d3.scaleTime().rangeRound([0, widthCluster]);
-  var clusterY = d3.scaleLinear().rangeRound([height, 0]);
-  clusterX.domain(x.domain());
-  clusterY.domain(y.domain());
 
   //Create x-axis for the context plot
   context.append("g")
@@ -75,45 +64,36 @@ function FocusPlotContext(data, meanLines, index)
       .attr("transform", "translate (0 , " + height2 + ")")
       .call(d3.axisBottom(contextX));
 
-  //Create x-axis for the focus plot
-  focus.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate (0 , " + height  + ")")
-      .call(d3.axisBottom(x));
-
-  //Create y-axis for the focus plot
-  focus.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y))
-      .append("text")
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("Amount (kg)");
-
-
-  //Create x-axis for the cluster plot
-  cluster.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate (0 , " + height + ")")
-      .call(d3.axisBottom(clusterX));
-
-  //Create y-axis for the cluster plot
-  cluster.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(clusterY))
-      .append("text")
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("Clustertext");
-
       console.log(meanLines);
   // Show clusters
+  createClusterPlot(meanLines);
+
+  function createClusterPlot(meanLines)
+  {
+
+    //Set axes and domain for the cluster plot
+    var clusterX = d3.scaleTime().rangeRound([0, widthCluster]);
+    var clusterY = d3.scaleLinear().rangeRound([height, 0]);
+    clusterX.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
+    clusterY.domain([0 ,maxValue]);
+
+    //Create x-axis for the cluster plot
+    cluster.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate (0 , " + height + ")")
+        .call(d3.axisBottom(clusterX));
+
+    //Create y-axis for the cluster plot
+    cluster.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(clusterY))
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Clustertext");
 
     for(var i = 0; i <meanLines.length; i++)
     {
@@ -135,8 +115,37 @@ function FocusPlotContext(data, meanLines, index)
 
     }
 
+    updateClick(data, meanLines);
+  }
 //Show lines for the selected data
+  createFocusPlot(data, meanLines, index);
 
+  function createFocusPlot(data, meanLines, index)
+  {
+
+    //Set axes and domain for the focus plot
+    var x = d3.scaleTime().rangeRound([0, width]);
+    var y = d3.scaleLinear().rangeRound([height, 0]);
+    x.domain(d3.extent(axisData, function(d) { return parseDate(d.year) }));
+    y.domain([0 ,maxValue]);
+
+    //Create x-axis for the focus plot
+    focus.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate (0 , " + height  + ")")
+        .call(d3.axisBottom(x));
+
+    //Create y-axis for the focus plot
+    focus.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Amount (kg)");
 
     if(index == -1)
     {
@@ -185,16 +194,27 @@ function FocusPlotContext(data, meanLines, index)
       }
     }
 
+    updateClick(data, meanLines);
+
+  }
+
+  updateClick(data, meanLines);
 
   //Select all the created lines
-  selected_lines = d3.selectAll("path");
+  function updateClick(data, meanLines)
+  {
+    //Select all the created lines
+    selected_lines = d3.selectAll("path");
 
-  //Mouse over function
-  mouseOver(selected_lines);
-  //Mouse out function
-  mouseOut(selected_lines);
-  //Mouse click function
-  mouseClick(selected_lines, data, meanLines);
+    //Mouse over function
+    mouseOver(selected_lines);
+    //Mouse out function
+    mouseOut(selected_lines);
+    //Mouse click function
+    mouseClick(selected_lines, data, meanLines);
+
+  }
+
 
   //Variable to save the original width of the line
   var originalWidth = 0;
@@ -232,11 +252,11 @@ function FocusPlotContext(data, meanLines, index)
       selected_lines.on("click", function(d){
 
           idx = d3.select(this).attr("id");
-          console.log(meanLines);
-          FocusPlotContext(data, meanLines, idx);
+
+          d3.selectAll("path").remove();
+          createClusterPlot(meanLines);
+          createFocusPlot(data, meanLines, idx);
       });
-
-
 
   }
 
