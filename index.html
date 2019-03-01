@@ -23,7 +23,14 @@
                     <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
                         <div id="context"></div>
                         <div id="plot"></div>
-                        <div id="mapid"></div>
+                        <div id="mapcontainer">
+                          <div class="slidecontainer">
+                            <input type="text" id="rangeText" value="">
+
+                            <input type="range" min="1961" max="2013" value="1987" class="slider" id="myRange" oninput="updateTextInput(this.value);">
+                          </div>
+                          <div id="mapid"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,12 +45,13 @@
 
 
     <!--Our scripts-->
-
+    <script type=text/javascript src="js/rangeSlider.js"></script>
     <script type=text/javascript src="js/DataHandling.js"></script>
     <script type=text/javascript src="js/map.js"></script>
     <script type=text/javascript src="js/plotData.js"></script>
     <script type=text/javascript src="js/DBSCAN.js"></script>
     <script type=text/javascript src="js/main.js"></script>
+
 
 
 </html>
