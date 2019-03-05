@@ -325,7 +325,8 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
 
           //Update the map with the new data and recolor it
           updateData(selected_data);
-          updateMap("1987");
+          var year_in = document. getElementById("myRange").value;
+          updateMap(year_in);
       });
 
   }
