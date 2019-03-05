@@ -3,7 +3,7 @@ function Information()
 
   //Function to display the tooltip information
   this.tooltipCluster = function(d) {
-  
+    console.log(d);
     //Access the tooltip div
     var tooltip = d3.select("#tooltip-cluster")
 
@@ -41,7 +41,7 @@ function Information()
     {
       sum +=d["Y"+i];
     }
-    sum =sum/(2013-1961);
+    sum =sum/(2013-1961+1);
     //Select the food id in tooptip and change the text
     tooltip.select("#mean-plot")
         .text("Mean avaiblity: " + sum.toFixed(2));
