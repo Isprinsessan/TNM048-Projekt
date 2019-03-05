@@ -186,7 +186,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
         .attr("y", 6)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("availability per capita (kg/person)");
+        .text("Availability per capita (kg/person)");
 
     //If it is the first time the function is called, loop through all the data
     //else only loop through the specifik data
@@ -253,11 +253,13 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   //Call click functions
   updateClick(data, meanLines,colors);
 
-  //Function to update the click functions
+  //Function to update the mouse functions
   function updateClick(data, meanLines)
   {
+
     //Select all the created lines
     selected_lines = d3.selectAll("path");
+    //Select all the lines in the cluster plot
     cluster_selected_lines = d3.selectAll(".clusterLines");
 
     //Mouse over function
@@ -278,6 +280,9 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
+          //Make sure that it is a line that is targeted and not an axis
+          if(this.attributes[0].nodeValue != "clusterLines" && this.attributes[0].nodeValue != "plotLines" )
+            return;
 
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
