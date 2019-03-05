@@ -1,11 +1,13 @@
-function FocusPlotContext(data, meanLines,nrOfCluster)
+function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
-  var colors = colorbrewer.Set3[nrOfCluster];
+  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster,3),12)];
+
+
 
   //Create margin, width and height variables for the plots
-  var margin = { top : 20, right: 20, bottom: 150, left: 40 },
-      margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
+  var margin = { top : 20, right: 20, bottom: 50, left: 40 },
+      margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
       width = $("#plot").parent().width() - margin.left - margin.right,
       widthCluster = $("#clusterPlot").parent().width() - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom,
@@ -38,7 +40,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
   //Create context plot
   var context = svg.append("g")
       .attr("class", "context")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + (margin.top-100) + ")");
 
   //Create the cluster plot
   var cluster = svg2.append("g")
@@ -74,10 +76,10 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
   }
 
   //Call the function to create the cluster plot
-  createClusterPlot(meanLines);
+  createClusterPlot(meanLines, colors);
 
   //Create cluster plot function
-  function createClusterPlot(meanLines)
+  function createClusterPlot(meanLines, colors)
   {
 
     //Set axes and domain for the cluster plot
@@ -119,10 +121,10 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
         cluster.append("path")
            .datum(currentData)
            .attr("fill", "none")
-           .attr("stroke", "red")
+           .attr("stroke", colors[meanLines[i].color])
            .attr("stroke-linejoin", "round")
            .attr("stroke-linecap", "round")
-           .attr("stroke-width", Math.sqrt(0.1*meanLines[i].index.length))
+           .attr("stroke-width", Math.sqrt(1.0*meanLines[i].index.length))
            .attr("d", line)
            .attr("id", i);
 
@@ -241,12 +243,12 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
     }
 
     //Update click functions
-    updateClick(data, meanLines);
+    updateClick(data, meanLines,colors);
 
   }
 
   //Call click functions
-  updateClick(data, meanLines);
+  updateClick(data, meanLines,colors);
 
   //Function to update the click functions
   function updateClick(data, meanLines)
@@ -259,7 +261,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
-    mouseClick(selected_lines, data, meanLines);
+    mouseClick(selected_lines, data, meanLines,colors);
 
   }
 
@@ -277,7 +279,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           originalWidth = d3.select(this).attr('stroke-width');
 
           //Rescale the line on hover
-          d3.select(this).attr('stroke-width', 5);
+          d3.select(this).attr('stroke-width', 10);
 
           //Create a information object
           information = new Information();
@@ -302,7 +304,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
   }
 
   //On mouse click function
-  function mouseClick(selected_lines, data, meanLines)
+  function mouseClick(selected_lines, data, meanLines,colors)
   {
 
       //On mouse click, change the data shown in the focus plot
@@ -325,7 +327,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           d3.selectAll(".axis--y").remove();
 
           //Replot the plots
-          createClusterPlot(meanLines);
+          createClusterPlot(meanLines, colors);
           createFocusPlot(data, meanLines, idx);
           createContextPlot();
 

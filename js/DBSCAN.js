@@ -103,8 +103,8 @@ function euclideanDist(point1, point2)
 	var sum =0;
 	for(var i =1961; i<=2013; i++)
 	{
-
 		sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
+		
 	}
 	return Math.sqrt(sum);
 }
