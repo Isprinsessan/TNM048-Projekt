@@ -45,10 +45,7 @@ LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
 //updateMap(1987);
 
 updateLegend();
-GEOJSON = L.geoJson(GEODATA, {
-    style: styleColor,
-    onEachFeature: onEachFeature
-}).addTo(MYMAP);
+updateHoover();
 
 
 
@@ -117,6 +114,7 @@ function updateMap(year_in) {
   addValueGeo(GEODATA,FAODATA,year);
   MYMAP.removeLayer(LAYERCOLORS);
   LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
+  updateHoover();
 }
 
 function styleColor(feature) {
@@ -152,7 +150,12 @@ function updateLegend(){
 }
 
 //mouse
-
+function updateHoover(){
+  GEOJSON = L.geoJson(GEODATA, {
+      style: styleColor,
+      onEachFeature: onEachFeature
+  }).addTo(MYMAP);
+}
 function highlightFeature(e) {
     var layer = e.target;
 
