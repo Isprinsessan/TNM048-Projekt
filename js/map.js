@@ -121,6 +121,7 @@ function getColor(d) {
                       '#FFEDA0';
 }
 function updateData(data_in){
+  console.log(data_in);
   FAODATA = data_in;
 
   var MAXYEAR = Math.ceil(maxAllYears(data_in));
@@ -184,7 +185,7 @@ function updateHoover(){
 }
 function highlightFeature(e) {
     var layer = e.target;
-
+    if(layer.feature.properties.value >= 0){
     layer.setStyle({
         weight: 3,
         color: '#666',
@@ -195,6 +196,7 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
+  }
 }
 
 function resetHighlight(e) {
