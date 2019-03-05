@@ -257,7 +257,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     selected_lines = d3.selectAll("path");
 
     //Mouse over function
-    mouseOver(selected_lines);
+    mouseOver(selected_lines, data);
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
@@ -269,12 +269,11 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   var originalWidth = 0;
 
   //Mouse over function
-  function mouseOver(selected_lines)
+  function mouseOver(selected_lines, data)
   {
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
-
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
 
@@ -283,9 +282,9 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Create a information object
           information = new Information();
-          
+
           //Show tooltip information
-          information.tooltip(d);
+          information.tooltip(data[this.id]);
 
       });
   }
