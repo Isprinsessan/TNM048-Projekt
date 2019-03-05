@@ -279,7 +279,6 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           //Rescale the line on hover
           d3.select(this).attr('stroke-width', 5);
 
-
       });
   }
 
@@ -306,6 +305,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           //Get the index of the lines
           idx = d3.select(this).attr("id");
 
+          //Create a new data from the selected lines
           var selected_data = [];
           var indices = meanLines[idx].index;
 
@@ -322,6 +322,8 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           createClusterPlot(meanLines);
           createFocusPlot(data, meanLines, idx);
           createContextPlot();
+
+          //Update the map with the new data and recolor it
           updateData(selected_data);
           updateMap("1987");
       });
