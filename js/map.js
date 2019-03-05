@@ -72,7 +72,6 @@ LEGEND.addTo(MYMAP);
 }
 function highlightFeature(e) {
     var layer = e.target;
-  console.log("hej");
     layer.setStyle({
         weight: 5,
         color: '#666',
@@ -104,7 +103,7 @@ function addValueGeo(worldData,splitData,year){
     }
 
   }
-  console.log(count);
+
 
 }
 function getColor(d) {
@@ -121,7 +120,7 @@ function getColor(d) {
 function updateData(data_in){
   FAODATA = data_in;
   var MAXYEAR = Math.ceil(maxAllYears(data_in));
-  console.log("year: " + Math.ceil(MAXYEAR));
+
 
 
 
@@ -188,7 +187,7 @@ function highlightFeature(e) {
         dashArray: '',
         fillOpacity: 0.7
     });
-    console.log(layer.feature.properties);
+
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }

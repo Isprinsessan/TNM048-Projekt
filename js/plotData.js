@@ -281,7 +281,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           d3.select(this).attr('stroke-width', 10);
 
           //Create a information object
-          information = new Information();
+          var information = new Information();
 
           //Show tooltip information
           information.tooltip(data[this.id]);
