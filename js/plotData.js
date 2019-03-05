@@ -313,9 +313,6 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
             selected_data.push(data[indices[i]]);
           }
 
-          updateData(selected_data);
-          updateMap("1987");
-
           //Remove all the earlier lines in the plots
           d3.selectAll("path").remove();
           //d3.selectAll("text").remove();
@@ -325,6 +322,8 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           createClusterPlot(meanLines);
           createFocusPlot(data, meanLines, idx);
           createContextPlot();
+          updateData(selected_data);
+          updateMap("1987");
       });
 
   }
