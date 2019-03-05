@@ -279,6 +279,12 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           //Rescale the line on hover
           d3.select(this).attr('stroke-width', 5);
 
+          //Create a information object
+          information = new Information();
+          
+          //Show tooltip information
+          information.tooltip(d);
+
       });
   }
 
@@ -325,7 +331,7 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
 
           //Update the map with the new data and recolor it
           updateData(selected_data);
-          var year_in = document. getElementById("myRange").value;
+          var year_in = document.getElementById("myRange").value;
           updateMap(year_in);
       });
 
