@@ -6,8 +6,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
 
   //Create margin, width and height variables for the plots
-  var margin = { top : 20, right: 20, bottom: 150, left: 40 },
-      margin2 = { top: 100, right: 20, bottom: 50, left: 40 },
+  var margin = { top : 20, right: 20, bottom: 50, left: 40 },
+      margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
       width = $("#plot").parent().width() - margin.left - margin.right,
       widthCluster = $("#clusterPlot").parent().width() - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom,
@@ -40,7 +40,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   //Create context plot
   var context = svg.append("g")
       .attr("class", "context")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + (margin.top-100) + ")");
 
   //Create the cluster plot
   var cluster = svg2.append("g")
