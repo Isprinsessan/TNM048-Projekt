@@ -69,6 +69,9 @@ LEGEND.onAdd = function (MYMAP) {
 
 LEGEND.addTo(MYMAP);
 
+
+
+
 }
 function highlightFeature(e) {
     var layer = e.target;
@@ -120,7 +123,7 @@ function getColor(d) {
 }
 function updateData(data_in){
   FAODATA = data_in;
-  var MAXYEAR = Math.ceil(maxAllYears(data_in));
+  MAXYEAR = Math.ceil(maxAllYears(data_in));
   console.log("year: " + Math.ceil(MAXYEAR));
 
 
