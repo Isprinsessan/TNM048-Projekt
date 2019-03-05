@@ -2,7 +2,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
   var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster,3),12)];
-  console.log(colors)
+
+
 
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 150, left: 40 },
@@ -150,7 +151,9 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     if(index == -1)
     {
        maxValue = maxAllYears(data);
-     }else{
+    }
+    else
+    {
 
         meanLines[index].index.forEach(function(d)
         {
@@ -182,7 +185,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
         .attr("y", 6)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("Amount (kg)");
+        .text("availability per capita (kg/person)");
 
     //If it is the first time the function is called, loop through all the data
     //else only loop through the specifik data
@@ -210,12 +213,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     }
     else {
 
+      //Get the index of each line
       var indices = meanLines[index].index;
 
+      //Loop through all the lines
       for(var i = 0; i <indices.length; i++)
       {
 
-          //Get the year and values for the current point in the data
+          //Get the year and values for the current line in the data
           var currentData = getYearAndValues(data[indices[i]]);
 
           //Create the line from the year and specified value
@@ -245,7 +250,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   //Call click functions
   updateClick(data, meanLines,colors);
 
-  //Select all the created lines
+  //Function to update the click functions
   function updateClick(data, meanLines)
   {
     //Select all the created lines
@@ -259,7 +264,6 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     mouseClick(selected_lines, data, meanLines,colors);
 
   }
-
 
   //Variable to save the original width of the line
   var originalWidth = 0;
@@ -303,6 +307,16 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Get the index of the lines
           idx = d3.select(this).attr("id");
+
+          var selected_data = [];
+          var indices = meanLines[idx].index;
+
+          for (var i = 0; i < indices.length; i++) {
+            selected_data.push(data[indices[i]]);
+          }
+
+          updateData(selected_data);
+          updateMap("1987");
 
           //Remove all the earlier lines in the plots
           d3.selectAll("path").remove();
