@@ -323,7 +323,8 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           createFocusPlot(data, meanLines, idx);
           createContextPlot();
           updateData(selected_data);
-          updateMap("1987");
+          var year_in = document. getElementById("myRange").value;
+          updateMap(year_in);
       });
 
   }

@@ -114,7 +114,12 @@ function getColor(d) {
                       '#FFEDA0';
 }
 function updateData(data_in){
-   FAODATA = data_in;
+  FAODATA = data_in;
+
+  var year_in = document. getElementById("myRange").value;
+  updateMap(year_in);
+
+
 }
 function updateMap(year_in) {
 
