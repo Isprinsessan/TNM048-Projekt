@@ -1,5 +1,6 @@
 var dataObject =[];
 var meanLines = [];
+var colors = [];
 
 d3.queue()
 .defer(d3.csv, "/data/FAO.csv")
@@ -24,12 +25,11 @@ d3.queue()
 
 
       //Run the DBSCAN and label the data
-    	var label =DBSCAN(foodAttribute,200,5);
-    	mLines =CalulateMeanLines(foodAttribute, label);
+    	var label =DBSCAN(foodAttribute,100,3);
+    	var mLines =CalulateMeanLines(foodAttribute, label);
     	meanLines = mLines.lines;
-      //Plot the data
-
-    	FocusPlotContext(foodAttribute, meanLines, -1, mLines.nrOfCluster);
+      //Plot the datas
+    	FocusPlotContext(foodAttribute, meanLines, mLines.nrOfCluster);
 
 	    $.getJSON("/data/customLow.geo.json",function(wData){
 	      worldMap(dataObject,wData);
