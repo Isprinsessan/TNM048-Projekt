@@ -119,6 +119,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
         //Add the line to the plot
         cluster.append("path")
+           .attr("class", "clusterLines")
            .datum(currentData)
            .attr("fill", "none")
            .attr("stroke", colors[meanLines[i].color])
@@ -200,6 +201,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Add the line to the plot
           focus.append("path")
+             .attr("class", "plotLines")
              .datum(currentData)
              .attr("fill", "none")
              .attr("stroke", "red")
@@ -230,6 +232,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Add the line to the plot
           focus.append("path")
+             .attr("class", "plotLines")
              .datum(currentData)
              .attr("fill", "none")
              .attr("stroke", "red")
@@ -255,13 +258,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   {
     //Select all the created lines
     selected_lines = d3.selectAll("path");
+    cluster_selected_lines = d3.selectAll(".clusterLines");
 
     //Mouse over function
     mouseOver(selected_lines, data);
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
-    mouseClick(selected_lines, data, meanLines,colors);
+    mouseClick(cluster_selected_lines, data, meanLines,colors);
 
   }
 
@@ -274,6 +278,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
+
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
 
@@ -283,8 +288,17 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           //Create a information object
           var information = new Information();
 
-          //Show tooltip information
-          information.tooltip(data[this.id]);
+          //Check which plot the current line is in and update the correct information div
+          if(this.attributes[0].nodeValue == "clusterLines")
+          {
+              //Show tooltip information
+              information.tooltipCluster(data[this.id]);
+          }
+          else if(this.attributes[0].nodeValue == "plotLines")
+          {
+              //Show tooltip information
+              information.tooltipPlot(data[this.id]);
+          }
 
       });
   }

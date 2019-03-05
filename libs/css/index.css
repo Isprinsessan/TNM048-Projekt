@@ -16,7 +16,7 @@
     pointer-events: none;
 }
 
-#tooltip, #color-info{
+#tooltip-plot,#tooltip-cluster,#tooltip-map, #color-info{
         height: 270px;
         background-color: white;
         -webkit-border-radius: 10px;
@@ -34,8 +34,18 @@
     font-size: 14px;
     line-height: 30px;
 }
-#tooltip, #color-info{
-    margin-top: 410px;
+#tooltip-cluster{
+    margin-top: 20px;
+    position: relative;
+    width: auto;
+}
+#tooltip-plot, #color-info{
+    margin-top: 170px;
+    position: relative;
+    width: auto;
+}
+#tooltip-map{
+    margin-top: 170px;
     position: relative;
     width: auto;
 }
