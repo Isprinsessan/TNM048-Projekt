@@ -306,6 +306,16 @@ function FocusPlotContext(data, meanLines,nrOfCluster)
           //Get the index of the lines
           idx = d3.select(this).attr("id");
 
+          var selected_data = [];
+          var indices = meanLines[idx].index;
+
+          for (var i = 0; i < indices.length; i++) {
+            selected_data.push(data[indices[i]]);
+          }
+
+          updateData(selected_data);
+          updateMap("1987");
+
           //Remove all the earlier lines in the plots
           d3.selectAll("path").remove();
           //d3.selectAll("text").remove();
