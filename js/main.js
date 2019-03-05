@@ -25,7 +25,7 @@ d3.queue()
 
 
       //Run the DBSCAN and label the data
-    	var label =DBSCAN(foodAttribute,100,3);
+    	var label =DBSCAN(foodAttribute,250,5);
     	var mLines =CalulateMeanLines(foodAttribute, label);
     	meanLines = mLines.lines;
       //Plot the datas

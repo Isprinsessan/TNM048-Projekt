@@ -124,7 +124,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
            .attr("stroke", colors[meanLines[i].color])
            .attr("stroke-linejoin", "round")
            .attr("stroke-linecap", "round")
-           .attr("stroke-width", Math.sqrt(0.5*meanLines[i].index.length))
+           .attr("stroke-width", Math.sqrt(1.0*meanLines[i].index.length))
            .attr("d", line)
            .attr("id", i);
 
@@ -279,7 +279,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           originalWidth = d3.select(this).attr('stroke-width');
 
           //Rescale the line on hover
-          d3.select(this).attr('stroke-width', 5);
+          d3.select(this).attr('stroke-width', 10);
 
 
       });
