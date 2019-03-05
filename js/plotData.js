@@ -246,22 +246,22 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     }
 
     //Update click functions
-    updateClick(data, meanLines,colors);
+    updateClick(data, meanLines,colors, index);
 
   }
 
   //Call click functions
-  updateClick(data, meanLines,colors);
+  updateClick(data, meanLines,colors,index);
 
   //Function to update the click functions
-  function updateClick(data, meanLines)
+  function updateClick(data, meanLines,colors, index)
   {
     //Select all the created lines
     selected_lines = d3.selectAll("path");
     cluster_selected_lines = d3.selectAll(".clusterLines");
 
     //Mouse over function
-    mouseOver(selected_lines, data);
+    mouseOver(selected_lines, data, meanLines,index);
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
@@ -273,12 +273,13 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   var originalWidth = 0;
 
   //Mouse over function
-  function mouseOver(selected_lines, data)
+  function mouseOver(selected_lines, data, meanLines,index)
   {
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
 
+        
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
 
@@ -287,17 +288,25 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Create a information object
           var information = new Information();
-
+        
           //Check which plot the current line is in and update the correct information div
           if(this.attributes[0].nodeValue == "clusterLines")
           {
               //Show tooltip information
-              information.tooltipCluster(data[this.id]);
+              information.tooltipCluster(meanLines[this.id]);
           }
           else if(this.attributes[0].nodeValue == "plotLines")
           {
+
               //Show tooltip information
-              information.tooltipPlot(data[this.id]);
+              if(index ==-1)
+              {
+                information.tooltipPlot(data[this.id]);
+              }else
+              {
+                information.tooltipPlot(data[meanLines[index].index[this.id]]);
+              }
+              
           }
 
       });
