@@ -32,7 +32,7 @@ d3.queue()
     	FocusPlotContext(foodAttribute, meanLines, mLines.nrOfCluster);
 
 	    $.getJSON("/data/customLow.geo.json",function(wData){
-	      worldMap(dataObject,wData);
+	      worldMap(foodAttribute,wData);
 	    })
     }
 });

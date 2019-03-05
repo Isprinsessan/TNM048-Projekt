@@ -3,10 +3,13 @@ var FAODATA;
 var GEODATA;
 var MYMAP;
 var LAYERCOLORS;
+var MAXYEAR;
+var GEOJSON;
 function worldMap(data,worldData) {
 
-FAODATA = splitOnAttribute(data[0],'Item Code', 2511);
+FAODATA =data;
 GEODATA = worldData;
+MAXYEAR = 250;
 
    //Food/Feed, Item Code,Area
 
@@ -41,26 +44,11 @@ addValueGeo(GEODATA,FAODATA,"Y1987");
 LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
 //updateMap(1987);
 
-var legend = L.control({position: 'bottomright'});
-
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
-
-legend.addTo(MYMAP);
-
+updateLegend();
+GEOJSON = L.geoJson(GEODATA, {
+    style: styleColor,
+    onEachFeature: onEachFeature
+}).addTo(MYMAP);
 
 
 
@@ -103,21 +91,21 @@ function addValueGeo(worldData,splitData,year){
 
 }
 function getColor(d) {
-    return d > 5000 ? '#800026' :
-           d > 2500  ? '#BD0026' :
-           d > 1000  ? '#E31A1C' :
-           d > 500  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
+    return d > (MAXYEAR) ? '#800026' :
+           d > ((MAXYEAR/7)*6)  ? '#BD0026' :
+           d > ((MAXYEAR/7)*5)  ? '#E31A1C' :
+           d > ((MAXYEAR/7)*4)  ? '#FC4E2A' :
+           d > ((MAXYEAR/7)*3)   ? '#FD8D3C' :
+           d > ((MAXYEAR/7)*2)   ? '#FEB24C' :
+           d > ((MAXYEAR/7)*1)   ? '#FED976' :
            d < 0   ? '#D3D3D3' :
                       '#FFEDA0';
 }
 function updateData(data_in){
   FAODATA = data_in;
+  var MAXYEAR = Math.ceil(maxAllYears(data_in));
+  console.log("year: " + Math.ceil(MAXYEAR));
 
-  var year_in = document. getElementById("myRange").value;
-  updateMap(year_in);
 
 
 }
@@ -140,4 +128,54 @@ function styleColor(feature) {
         dashArray: '3',
         fillOpacity: 0.7
     };
+}
+function updateLegend(){
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info legend'),
+          grades = [0, Math.ceil(((MAXYEAR/7)*1)), Math.ceil(((MAXYEAR/7)*2)), Math.ceil(((MAXYEAR/7)*3)), Math.ceil(((MAXYEAR/7)*4)), Math.ceil(((MAXYEAR/7)*5)), Math.ceil(((MAXYEAR/7)*6)), MAXYEAR],
+          labels = [];
+
+      // loop through our density intervals and generate a label with a colored square for each interval
+      for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+              '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+              grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+      }
+
+      return div;
+  };
+
+  legend.addTo(MYMAP);
+}
+
+//mouse
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    console.log(layer.feature.properties);
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+}
+
+function resetHighlight(e) {
+    GEOJSON.resetStyle(e.target);
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        //click: zoomToFeature
+    });
 }
