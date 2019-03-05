@@ -113,6 +113,9 @@ function getColor(d) {
            d < 0   ? '#D3D3D3' :
                       '#FFEDA0';
 }
+function updateData(data_in){
+   FAODATA = data_in;
+}
 function updateMap(year_in) {
 
 
