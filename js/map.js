@@ -5,6 +5,7 @@ var MYMAP;
 var LAYERCOLORS;
 var MAXYEAR;
 var GEOJSON;
+var LEGEND;
 function worldMap(data,worldData) {
 
 FAODATA =data;
@@ -44,13 +45,29 @@ addValueGeo(GEODATA,FAODATA,"Y1987");
 LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
 //updateMap(1987);
 
-updateLegend();
-GEOJSON = L.geoJson(GEODATA, {
-    style: styleColor,
-    onEachFeature: onEachFeature
-}).addTo(MYMAP);
 
+updateHoover();
 
+//LEGEND
+LEGEND = L.control({position: 'bottomright'});
+
+LEGEND.onAdd = function (MYMAP) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, Math.ceil(((MAXYEAR/7)*1)), Math.ceil(((MAXYEAR/7)*2)), Math.ceil(((MAXYEAR/7)*3)), Math.ceil(((MAXYEAR/7)*4)), Math.ceil(((MAXYEAR/7)*5)), Math.ceil(((MAXYEAR/7)*6)), MAXYEAR],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+LEGEND.addTo(MYMAP);
 
 }
 function highlightFeature(e) {
@@ -117,6 +134,8 @@ function updateMap(year_in) {
   addValueGeo(GEODATA,FAODATA,year);
   MYMAP.removeLayer(LAYERCOLORS);
   LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
+  updateLegend();
+  updateHoover();
 }
 
 function styleColor(feature) {
@@ -130,9 +149,10 @@ function styleColor(feature) {
     };
 }
 function updateLegend(){
-  var legend = L.control({position: 'bottomright'});
+  MYMAP.removeControl(LEGEND);
+  LEGEND = L.control({position: 'bottomright'});
 
-  legend.onAdd = function (map) {
+  LEGEND.onAdd = function (MYMAP) {
 
       var div = L.DomUtil.create('div', 'info legend'),
           grades = [0, Math.ceil(((MAXYEAR/7)*1)), Math.ceil(((MAXYEAR/7)*2)), Math.ceil(((MAXYEAR/7)*3)), Math.ceil(((MAXYEAR/7)*4)), Math.ceil(((MAXYEAR/7)*5)), Math.ceil(((MAXYEAR/7)*6)), MAXYEAR],
@@ -148,16 +168,22 @@ function updateLegend(){
       return div;
   };
 
-  legend.addTo(MYMAP);
+  LEGEND.addTo(MYMAP);
+
 }
 
 //mouse
-
+function updateHoover(){
+  GEOJSON = L.geoJson(GEODATA, {
+      style: styleColor,
+      onEachFeature: onEachFeature
+  }).addTo(MYMAP);
+}
 function highlightFeature(e) {
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
+        weight: 3,
         color: '#666',
         dashArray: '',
         fillOpacity: 0.7
