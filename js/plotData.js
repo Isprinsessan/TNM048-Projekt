@@ -257,7 +257,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     selected_lines = d3.selectAll("path");
 
     //Mouse over function
-    mouseOver(selected_lines);
+    mouseOver(selected_lines, data);
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
@@ -269,18 +269,22 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   var originalWidth = 0;
 
   //Mouse over function
-  function mouseOver(selected_lines)
+  function mouseOver(selected_lines, data)
   {
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
       {
-
           //Store the original width
           originalWidth = d3.select(this).attr('stroke-width');
 
           //Rescale the line on hover
           d3.select(this).attr('stroke-width', 10);
 
+          //Create a information object
+          information = new Information();
+
+          //Show tooltip information
+          information.tooltip(data[this.id]);
 
       });
   }
@@ -308,6 +312,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           //Get the index of the lines
           idx = d3.select(this).attr("id");
 
+          //Create a new data from the selected lines
           var selected_data = [];
           var indices = meanLines[idx].index;
 
@@ -324,8 +329,10 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           createClusterPlot(meanLines, colors);
           createFocusPlot(data, meanLines, idx);
           createContextPlot();
+
+          //Update the map with the new data and recolor it
           updateData(selected_data);
-          var year_in = document. getElementById("myRange").value;
+          var year_in = document.getElementById("myRange").value;
           updateMap(year_in);
       });
 
