@@ -1,7 +1,7 @@
 function Information()
 {
 
-  //Function to display the tooltip information
+  //Function to display the tooltip information for the cluster
   this.tooltipCluster = function(d) {
 
     //Access the tooltip div
@@ -17,6 +17,7 @@ function Information()
 
   }
 
+  //Function to display the tooltip information for the plot
   this.tooltipPlot = function(d) {
 
     //Access the tooltip div
@@ -32,18 +33,22 @@ function Information()
 
   }
 
-  this.tooltipMap = function(d) {
+  //Function to display the tooltip information for the map
+  this.tooltipMap = function(d, i) {
 
     //Access the tooltip div
     var tooltip = d3.select("#tooltip-map")
 
     //Select the country id in tooptip and change the text to the current country
     tooltip.select("#country-map")
-        .text("Country: " + d["Area"]);
+        .text("Country: " + d.name);
+
+    tooltip.select("#food-map")
+        .text("Food type: " + i);
 
     //Select the food id in tooptip and change the text
-    tooltip.select("#food-map")
-        .text("Produced food type: " + d["Item"]);
+    tooltip.select("#amount-map")
+        .text("Amount produced: " + d.value.toFixed(2) + " kg/capita");
 
   }
 
