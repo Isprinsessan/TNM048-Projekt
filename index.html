@@ -24,7 +24,6 @@
                         <div id="mapcontainer">
                           <div class="slidecontainer">
                             <input type="text" id="rangeText" value="">
-
                             <input type="range" min="1961" max="2013" value="1987" class="slider" id="myRange" oninput="updateTextInput(this.value);">
                           </div>
                           <div id="mapid"></div>
@@ -33,16 +32,31 @@
 
                     <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <div class="row">
-                            <div class="col-12" id="tooltip">
+                            <div class="col-12" id="tooltip-cluster">
                                 <br>
                                 <h5><strong>Information</strong></h5>
                                 <hr>
-                                <p><span id="country">Country</span></p>
-                                <p><span id="food">Produced food</span></p>
+                                <p><span id="country-cluster">Country</span></p>
+                                <p><span id="food-cluster">Produced food</span></p>
+                            </div>
+
+                            <div class="col-12" id="tooltip-plot">
+                                <br>
+                                <h5><strong>Information</strong></h5>
+                                <hr>
+                                <p><span id="country-plot">Country</span></p>
+                                <p><span id="food-plot">Produced food</span></p>
+                            </div>
+
+                            <div class="col-12" id="tooltip-map">
+                                <br>
+                                <h5><strong>Information</strong></h5>
+                                <hr>
+                                <p><span id="country-map">Country</span></p>
+                                <p><span id="food-map">Produced food</span></p>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
