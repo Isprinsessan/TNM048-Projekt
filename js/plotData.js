@@ -298,7 +298,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           if(this.attributes[0].nodeValue == "clusterLines")
           {
               //Show tooltip information
-              information.tooltipCluster(meanLines[this.id]);
+              information.tooltipCluster(meanLines[this.id],data[meanLines[this.id].index[0]]["Item"] );
           }
           else if(this.attributes[0].nodeValue == "plotLines")
           {

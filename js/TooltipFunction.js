@@ -2,11 +2,10 @@ function Information()
 {
 
   //Function to display the tooltip information for the cluster
-  this.tooltipCluster = function(d) {
+  this.tooltipCluster = function(d,item) {
 
     //Access the tooltip div
     var tooltip = d3.select("#tooltip-cluster")
-
     //Select the country id in tooptip and change the text to the current country
     tooltip.select("#country-cluster")
         .text("Countries in cluster: " );
@@ -29,6 +28,14 @@ function Information()
         .style("font-weight", "");
     tooltip.select("#food-cluster-value")
         .text(sum.toFixed(2))
+        .style("font-weight", "bold")
+
+    //Food item type
+     tooltip.select("#type-cluster")
+        .text("Cluster type: ")
+        .style("font-weight", "");
+    tooltip.select("#type-cluster-value")
+        .text(item)
         .style("font-weight", "bold")
   }
 
