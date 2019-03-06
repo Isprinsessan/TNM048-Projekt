@@ -3,7 +3,7 @@ function Information()
 
   //Function to display the tooltip information for the cluster
   this.tooltipCluster = function(d) {
-  
+
     //Access the tooltip div
     var tooltip = d3.select("#tooltip-cluster")
 
@@ -36,14 +36,14 @@ function Information()
     tooltip.select("#food-plot")
         .text("Produced food type: " + d["Item"]);
 
-    var sum =0;
-    //console.log(d);
+    var sum = 0;
+
     for(var i =1961;i<=2013 ;i++)
     {
       sum +=d["Y"+i];
     }
     sum =sum/(2013-1961);
-    //Select the food id in tooptip and change the text
+    //Select the mean-plot id in tooptip-plot and change the text
     tooltip.select("#mean-plot")
         .text("Mean avaiblity: " + sum.toFixed(2));
 
@@ -59,10 +59,11 @@ function Information()
     tooltip.select("#country-map")
         .text("Country: " + d.name);
 
+    //Select the food id in tooptip and change the text
     tooltip.select("#food-map")
         .text("Food type: " + i);
 
-    //Select the food id in tooptip and change the text
+
     tooltip.select("#amount-map")
         .text("Amount produced: " + d.value.toFixed(2) + " kg/capita");
 

@@ -3,8 +3,6 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   //Create colors for lines.
   var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster,3),12)];
 
-
-
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
       margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
@@ -259,15 +257,13 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
     //Select all the created lines
     selected_lines = d3.selectAll("path");
-    //Select all the lines in the cluster plot
-    cluster_selected_lines = d3.selectAll(".clusterLines");
 
     //Mouse over function
     mouseOver(selected_lines, data, meanLines,index);
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
-    mouseClick(cluster_selected_lines, data, meanLines,colors);
+    mouseClick(selected_lines, data, meanLines,colors);
 
   }
 
@@ -307,7 +303,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
               if(index ==-1)
               {
                 information.tooltipPlot(data[this.id]);
-              }else
+              }
+              else
               {
                 information.tooltipPlot(data[meanLines[index].index[this.id]]);
               }
@@ -323,8 +320,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
       //On mouse out return to the original width of the line
       selected_lines.on("mouseout", function(d){
+          //Make sure that it is a line that is targeted and not an axis
+          if(this.attributes[0].nodeValue != "clusterLines" && this.attributes[0].nodeValue != "plotLines" )
+            return;
 
           //Return line to original state
+          if(d3.select(this).attr("clicked") == "clicked")
+            return;
+
           d3.select(this).attr('stroke-width', originalWidth);
 
       });
@@ -337,26 +340,71 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       //On mouse click, change the data shown in the focus plot
       selected_lines.on("click", function(d){
 
+          //Make sure that it is a line that is targeted and not an axis
+          if(this.attributes[0].nodeValue != "clusterLines" && this.attributes[0].nodeValue != "plotLines" )
+            return;
+
+          //Select all the lines in the focus plot (if changed to d3.selectAll("path"), it will work with the cluster plot too)
+          var allLines = focus.selectAll("path");
+
+          //Add a tag to each line to see if it has been clicked
+          allLines.attr("clicked", null);
+
+          //Array to store the original width of the stroke for each line
+          var orgValArray = [];
+
+          //Loop through all the lines in the plot
+          for(var i = 0; i < allLines._groups[0].length; i++)
+          {
+            //Make sure that the line has the attribute stroke-width
+            if(!allLines._groups[0][i].attributes[5] ||  allLines._groups[0][i].attributes[5].localName != "stroke-width")
+              continue;
+
+            //Store all the original values in an array
+            orgValArray[i] = allLines._groups[0][i].attributes[5].nodeValue;
+
+            //Set the stroke width to the original value
+            allLines._groups[0][i].attributes[5].nodeValue = 1;
+
+          }
+
+          //Set the clicked lines width to the set value
+          d3.select(this).attr('stroke-width', 10);
+
+          //Change the tag to clicked so that the thickness doesnt disapper when hovered
+          d3.select(this).attr("clicked", "clicked");
+
           //Get the index of the lines
           idx = d3.select(this).attr("id");
 
           //Create a new data from the selected lines
           var selected_data = [];
-          var indices = meanLines[idx].index;
 
-          for (var i = 0; i < indices.length; i++) {
-            selected_data.push(data[indices[i]]);
+          //Check which plot the clicked line is in
+          if(this.attributes[0].nodeValue == "clusterLines")
+          {
+              var indices = meanLines[idx].index;
+
+              for (var i = 0; i < indices.length; i++) {
+                selected_data.push(data[indices[i]]);
+              }
+
+              //Remove all the earlier lines in the plots
+              d3.selectAll("path").remove();
+              //Remove the y-axis so it can be redrawn with new values
+              d3.selectAll(".axis--y").remove();
+
+              //Replot the plots
+              createClusterPlot(meanLines, colors);
+              createFocusPlot(data, meanLines, idx);
+              createContextPlot();
+
           }
-
-          //Remove all the earlier lines in the plots
-          d3.selectAll("path").remove();
-          //d3.selectAll("text").remove();
-          d3.selectAll(".axis--y").remove();
-
-          //Replot the plots
-          createClusterPlot(meanLines, colors);
-          createFocusPlot(data, meanLines, idx);
-          createContextPlot();
+          else if(this.attributes[0].nodeValue == "plotLines")
+          {
+              //If the line is in the focus plot, send the data for that line to the map
+              selected_data.push(data[idx]);
+          }
 
           //Update the map with the new data and recolor it
           updateData(selected_data);
