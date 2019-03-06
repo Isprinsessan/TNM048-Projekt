@@ -192,12 +192,9 @@ function highlightFeature(e) {
         dashArray: '',
         fillOpacity: 0.7
     });
-
     information = new Information();
 
     information.tooltipMap(layer.feature.properties, FAODATA[1].Item);
-
-
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();

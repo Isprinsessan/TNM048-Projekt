@@ -1,7 +1,7 @@
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
-  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster,3),12)];
+  var colors = colorbrewer.PuOr[Math.min(Math.max(nrOfCluster,3),11)];
 
 
 
