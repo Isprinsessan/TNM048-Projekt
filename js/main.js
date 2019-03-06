@@ -21,11 +21,11 @@ d3.queue()
     	dataObject.push(convertToPerCapita(foodFeed[1], population));
 
       //Get a ceertain attribute from the data
-    	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2511);
+    	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2656);
 
 
       //Run the DBSCAN and label the data
-    	var label =DBSCAN(foodAttribute,250,5);
+    	var label =DBSCAN(foodAttribute,210,3);
     	var mLines =CalulateMeanLines(foodAttribute, label);
     	meanLines = mLines.lines;
       //Plot the datas
