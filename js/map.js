@@ -124,7 +124,7 @@ function updateData(data_in){
   console.log(data_in);
   FAODATA = data_in;
 
-  var MAXYEAR = Math.ceil(maxAllYears(data_in));
+  MAXYEAR = Math.ceil(maxAllYears(data_in));
 
 
 
