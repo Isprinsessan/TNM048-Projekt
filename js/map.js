@@ -193,8 +193,7 @@ function highlightFeature(e) {
         fillOpacity: 0.7
     });
     information = new Information();
-
-    information.tooltipMap(layer.feature.properties, FAODATA[1].Item);
+    information.tooltipMap(layer.feature.properties, FAODATA[0].Item);
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();

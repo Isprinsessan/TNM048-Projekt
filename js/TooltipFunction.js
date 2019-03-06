@@ -16,11 +16,17 @@ function Information()
 
     //Calculate mean    
     var sum =0;
+    var counter = 0;
     d.line.forEach(function(d)
     {
-      sum +=d.value;
+      if(d.value !=Infinity &&d.value !=0)
+      {
+        sum +=d.value;
+        counter++;
+      }
+      
     })
-    sum =sum/d.line.length;
+    sum =sum/counter;
     //Select the food id in tooptip and change the text
 
     tooltip.select("#food-cluster")
@@ -59,12 +65,18 @@ function Information()
         .text(d["Item"])
         .style("font-weight", "bold")
     var sum =0;
+    var counter =0;
     //console.log(d);
     for(var i =1961;i<=2013 ;i++)
     {
-      sum +=d["Y"+i];
+      if(d["Y"+i] !=Infinity &&d["Y"+i] !=0)
+      {
+        sum +=d["Y"+i];
+        counter++;
+      }
+      
     }
-    sum =sum/(2013-1961+1);
+    sum =sum/counter;
     //Select the food id in tooptip and change the text
     tooltip.select("#mean-plot")
         .text("Mean avaiblity: ");
