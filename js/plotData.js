@@ -1,7 +1,7 @@
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
-  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster,3),12)];
+  var colors = colorbrewer.PuOr[Math.min(Math.max(nrOfCluster,3),11)];
 
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
@@ -21,7 +21,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   var svg2 = d3.select("#clusterPlot").append("svg")
       .attr("position", "relative")
       .attr("width", "100%")
-      .attr("height", height + margin2.top + margin.bottom);
+      .attr("height", (height) + margin2.top + margin.bottom);
 
   //Add brush rectangle
   svg.append("defs").append("clipPath")
@@ -102,7 +102,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
         .attr("y", 6)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("kg/Capita");
+        .text("Availability per capita (kg/person)");
 
     //Loop through all lines in the data and
     for(var i = 0; i <meanLines.length; i++)
@@ -112,8 +112,9 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
         //Create the line from the years and the values
         var line = d3.line()
-           .x(function(d) { return clusterX(parseDate(d.year))})
-           .y(function(d) { return clusterY(d.value)})
+          .defined(function(d) {return d.value!=Infinity&& d.value !=0})
+          .x(function(d) { return clusterX(parseDate(d.year))})
+          .y(function(d) {return clusterY(d.value);})
 
         //Add the line to the plot
         cluster.append("path")
@@ -194,6 +195,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       {
           var currentData = getYearAndValues(data[i]);
           var line = d3.line()
+              .defined(function(d) {return d.value!=Infinity&& d.value !=0})
              .x(function(d) { return x(parseDate(d.year))})
              .y(function(d) { return y(d.value)})
 
@@ -225,6 +227,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Create the line from the year and specified value
           var line = d3.line()
+             .defined(function(d) {return d.value!=Infinity && d.value !=0})
              .x(function(d) { return x(parseDate(d.year))})
              .y(function(d) { return y(d.value)})
 
@@ -294,7 +297,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           if(this.attributes[0].nodeValue == "clusterLines")
           {
               //Show tooltip information
-              information.tooltipCluster(meanLines[this.id]);
+              information.tooltipCluster(meanLines[this.id],data[meanLines[this.id].index[0]]["Item"] );
           }
           else if(this.attributes[0].nodeValue == "plotLines")
           {

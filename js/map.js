@@ -124,7 +124,7 @@ function updateData(data_in){
   //console.log(data_in);
   FAODATA = data_in;
 
-  var MAXYEAR = Math.ceil(maxAllYears(data_in));
+  MAXYEAR = Math.ceil(maxAllYears(data_in));
 
 
 
@@ -192,9 +192,9 @@ function highlightFeature(e) {
         dashArray: '',
         fillOpacity: 0.7
     });
-
     information = new Information();
-    information.tooltipMap(layer.feature.properties, FAODATA[1].Item);
+    information.tooltipMap(layer.feature.properties, FAODATA[0].Item);
+
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }

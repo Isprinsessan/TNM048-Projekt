@@ -154,4 +154,3 @@ function getYearAndValues(data)
 	return result;
 }
 
-
