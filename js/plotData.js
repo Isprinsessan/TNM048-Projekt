@@ -104,7 +104,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
         .attr("y", 6)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("kg/Capita");
+        .text("Availability per capita (kg/person)");
 
     //Loop through all lines in the data and
     for(var i = 0; i <meanLines.length; i++)
