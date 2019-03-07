@@ -6,6 +6,7 @@ var LAYERCOLORS;
 var MAXYEAR;
 var GEOJSON;
 var LEGEND;
+var COUNTRYDISPLAY;
 function worldMap(data,worldData) {
 
 FAODATA =data;
@@ -39,14 +40,16 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
     noWrap: true
 }).addTo(MYMAP);
 //  var worldData = new L.geoJSON.AJAX("/Data/custom.geo.json");
-//L.geoJson(GEODATA).addTo(MYMAP);
+
 //split up data to one category
 addValueGeo(GEODATA,FAODATA,"Y1987");
-LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
-//updateMap(1987);
 
+LAYERCOLORS = L.geoJson(GEODATA,
+   {
+     style: styleColor,
+     onEachFeature: onEachFeature
+  }).addTo(MYMAP);
 
-updateHoover();
 
 //LEGEND
 LEGEND = L.control({position: 'bottomright'});
@@ -73,19 +76,14 @@ LEGEND.addTo(MYMAP);
 
 
 }
-function highlightFeature(e) {
-    var layer = e.target;
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        //click: zoomToFeature
     });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
 }
+
 
 function addValueGeo(worldData,splitData,year){
   var count = 0;
@@ -126,9 +124,6 @@ function updateData(data_in){
 
   MAXYEAR = Math.ceil(maxAllYears(data_in));
 
-
-
-
 }
 function updateMap(year_in) {
 
@@ -136,10 +131,17 @@ function updateMap(year_in) {
   //add values to geojson
   var year = "Y" + year_in;
   addValueGeo(GEODATA,FAODATA,year);
+
   MYMAP.removeLayer(LAYERCOLORS);
-  LAYERCOLORS = L.geoJson(GEODATA, {style: styleColor}).addTo(MYMAP);
+
+  LAYERCOLORS = L.geoJson(GEODATA,
+     {
+       style: styleColor,
+       onEachFeature: onEachFeature
+    }).addTo(MYMAP);
   updateLegend();
-  updateHoover();
+
+  information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
 }
 
 function styleColor(feature) {
@@ -177,12 +179,7 @@ function updateLegend(){
 }
 
 //mouse
-function updateHoover(){
-  GEOJSON = L.geoJson(GEODATA, {
-      style: styleColor,
-      onEachFeature: onEachFeature
-  }).addTo(MYMAP);
-}
+
 function highlightFeature(e) {
     var layer = e.target;
     if(layer.feature.properties.value >= 0){
@@ -193,6 +190,7 @@ function highlightFeature(e) {
         fillOpacity: 0.7
     });
     information = new Information();
+    COUNTRYDISPLAY = layer.feature.properties;
     information.tooltipMap(layer.feature.properties, FAODATA[0].Item);
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -202,13 +200,5 @@ function highlightFeature(e) {
 }
 
 function resetHighlight(e) {
-    GEOJSON.resetStyle(e.target);
-}
-
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        //click: zoomToFeature
-    });
+    LAYERCOLORS.resetStyle(e.target);
 }

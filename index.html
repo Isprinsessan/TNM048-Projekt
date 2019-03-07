@@ -23,8 +23,14 @@
                         <div id="plot"></div>
                         <div id="mapcontainer">
                           <div class="slidecontainer">
-                            <input type="text" id="rangeText" value="">
-                            <input type="range" min="1961" max="2013" value="1987" class="slider" id="myRange" oninput="updateTextInput(this.value);">
+
+                            <p id="rangeText">Year: 1987</p>
+                            <div class="slideFloat">
+                              <p id="minYear" class="float">1961</p>
+                              <input type="range" min="1961" max="2013" value="1987" class="slider float" id="myRange" oninput="updateTextInput(this.value);">
+
+                              <p id="maxYear" class="float">2013</p>
+                            </div>
                           </div>
                           <div id="mapid"></div>
                         </div>
