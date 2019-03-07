@@ -400,7 +400,6 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
               //Replot the plots
               createClusterPlot(meanLines, colors);
-              console.log("idx "+idx )
               createFocusPlot(data, meanLines, idx);
               createContextPlot();
 
@@ -416,10 +415,13 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
                   information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
               }
               //If the line is in the focus plot, send the data for that line to the map
-              if(index =! -1)
+              
+              if(index != -1)
               {
+
                  selected_data.push(data[meanLines[index].index[idx]]);
                }else{
+
                  selected_data.push(data[idx]);
                }
              
@@ -427,7 +429,6 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //updateData(selected_data);
           //Update the map with the new data and recolor it
-          
           updateData(selected_data);
           var year_in = document.getElementById("myRange").value;
           updateMap(year_in);

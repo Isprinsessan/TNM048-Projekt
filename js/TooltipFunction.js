@@ -128,7 +128,6 @@ function Information()
 
   //Function to display the tooltip information for the map
   this.tooltipMap = function(d, i) {
-
     //Access the tooltip div
     var tooltip = d3.select("#tooltip-map")
 
