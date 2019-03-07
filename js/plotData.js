@@ -1,8 +1,7 @@
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
-  var colors = colorbrewer.PuOr[Math.min(Math.max(nrOfCluster,3),11)];
-
+  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster+1,3),12)];
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
       margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
@@ -110,9 +109,10 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
         //Get the year and value for the current point in the data
         var currentData = meanLines[i].line;
 
+
         //Create the line from the years and the values
         var line = d3.line()
-          .defined(function(d) {return d.value!=Infinity&& d.value !=0})
+          .defined(function(d) {return d.value!=Infinity&& d.value !=0 &&!isNaN(d.value)&&d.value !=undefined})
           .x(function(d) { return clusterX(parseDate(d.year))})
           .y(function(d) {return clusterY(d.value);})
 
@@ -124,14 +124,13 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
            .attr("stroke", colors[meanLines[i].color])
            .attr("stroke-linejoin", "round")
            .attr("stroke-linecap", "round")
-           .attr("stroke-width", Math.sqrt(1.0*meanLines[i].index.length))
+           .attr("stroke-width", Math.min(Math.sqrt(2.0*meanLines[i].index.length),9))
            .attr("d", line)
            .attr("id", i);
 
     }
 
     //Update the click functions
-    updateClick(data, meanLines);
 
   }
 
@@ -195,7 +194,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       {
           var currentData = getYearAndValues(data[i]);
           var line = d3.line()
-              .defined(function(d) {return d.value!=Infinity&& d.value !=0})
+              .defined(function(d) {return d.value!=Infinity&& d.value !=0 &&!isNaN(d.value)&&d.value !=undefined})
              .x(function(d) { return x(parseDate(d.year))})
              .y(function(d) { return y(d.value)})
 
@@ -227,7 +226,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Create the line from the year and specified value
           var line = d3.line()
-             .defined(function(d) {return d.value!=Infinity && d.value !=0})
+             .defined(function(d) {return d.value!=Infinity&& d.value !=0 &&!isNaN(d.value)&&d.value !=undefined})
              .x(function(d) { return x(parseDate(d.year))})
              .y(function(d) { return y(d.value)})
 
@@ -266,7 +265,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     //Mouse out function
     mouseOut(selected_lines);
     //Mouse click function
-    mouseClick(selected_lines, data, meanLines,colors);
+    mouseClick(selected_lines, data, meanLines,colors, index);
 
   }
 
@@ -337,15 +336,17 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   }
 
   //On mouse click function
-  function mouseClick(selected_lines, data, meanLines,colors)
+  function mouseClick(selected_lines, data, meanLines,colors, index)
   {
-
       //On mouse click, change the data shown in the focus plot
       selected_lines.on("click", function(d){
 
           //Make sure that it is a line that is targeted and not an axis
           if(this.attributes[0].nodeValue != "clusterLines" && this.attributes[0].nodeValue != "plotLines" )
             return;
+
+          //Create information tooltip
+          var information = new Information();
 
           //Select all the lines in the focus plot (if changed to d3.selectAll("path"), it will work with the cluster plot too)
           var allLines = focus.selectAll("path");
@@ -399,17 +400,34 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
               //Replot the plots
               createClusterPlot(meanLines, colors);
+              console.log("idx "+idx )
               createFocusPlot(data, meanLines, idx);
               createContextPlot();
 
           }
           else if(this.attributes[0].nodeValue == "plotLines")
           {
+             //Update the information in tooltip
+              if(index ==-1)
+              {
+                  information.tooltipPlotClicked(data[this.id]);
+              }else
+              {
+                  information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
+              }
               //If the line is in the focus plot, send the data for that line to the map
-              selected_data.push(data[idx]);
+              if(index =! -1)
+              {
+                 selected_data.push(data[meanLines[index].index[idx]]);
+               }else{
+                 selected_data.push(data[idx]);
+               }
+             
           }
 
+          //updateData(selected_data);
           //Update the map with the new data and recolor it
+          
           updateData(selected_data);
           var year_in = document.getElementById("myRange").value;
           updateMap(year_in);

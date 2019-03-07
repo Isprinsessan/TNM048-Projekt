@@ -88,16 +88,16 @@ function convertToPerCapita(food, population)
 function maxAllYears(data)
 {
 	max = 0;
-	data.forEach(function(d)
+	for(var d=0; d<data.length;d++)
 	{
 		for(var i =1961; i<=2013;i++)
 		{
-			if(max <d["Y"+i] && d["Y"+i] !=Infinity )
+			if(max <data[d]["Y"+i] && data[d]["Y"+i] !=Infinity )
 			{
-				max = d["Y"+i];
+				max = data[d]["Y"+i];
 			}
 		}
-	})
+	}
 	return max;
 }
 
