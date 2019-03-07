@@ -6,6 +6,7 @@ var LAYERCOLORS;
 var MAXYEAR;
 var GEOJSON;
 var LEGEND;
+var COUNTRYDISPLAY;
 function worldMap(data,worldData) {
 
 FAODATA =data;
@@ -130,7 +131,7 @@ function updateMap(year_in) {
   //add values to geojson
   var year = "Y" + year_in;
   addValueGeo(GEODATA,FAODATA,year);
-  
+
   MYMAP.removeLayer(LAYERCOLORS);
 
   LAYERCOLORS = L.geoJson(GEODATA,
@@ -139,6 +140,8 @@ function updateMap(year_in) {
        onEachFeature: onEachFeature
     }).addTo(MYMAP);
   updateLegend();
+
+  information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
 }
 
 function styleColor(feature) {
@@ -187,6 +190,7 @@ function highlightFeature(e) {
         fillOpacity: 0.7
     });
     information = new Information();
+    COUNTRYDISPLAY = layer.feature.properties;
     information.tooltipMap(layer.feature.properties, FAODATA[0].Item);
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
