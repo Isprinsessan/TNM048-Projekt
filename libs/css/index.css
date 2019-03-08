@@ -16,8 +16,8 @@
     pointer-events: none;
 }
 
-#tooltip-plot,#tooltip-cluster,#tooltip-map, #color-info{
-        height: 270px;
+#tooltip-cluster,#tooltip-map, #color-info{
+        height: 250px;
         background-color: white;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -28,6 +28,19 @@
         pointer-events: none;
         opacity: 0.8;
 }
+#tooltip-plot{
+        height: 450px;
+        background-color: white;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+        opacity: 0.8;
+        margin-top: 60px;
+}
 #tooltip p {
     margin: 0;
     font-family: sans-serif;
@@ -35,11 +48,11 @@
     line-height: 30px;
 }
 #tooltip-cluster{
-    margin-top: 20px;
+    margin-top: 70px;
     position: relative;
     width: auto;
 }
-#tooltip-plot, #color-info{
+#color-info{
     margin-top: 170px;
     position: relative;
     width: auto;
@@ -62,7 +75,7 @@
 #mapid {
   height: 400px;
   width: auto;
-  margin-top: 50px;
+  margin-top: -20px;
   margin-left: 40px;
   margin-right: 20px;
   margin-bottom: 0px;
@@ -71,13 +84,49 @@
 
   height: 600px;
   width: auto;
+ /* margin-top: 50px;*/
+}
+.slidecontainer{
+  height: 100px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
 }
 
+
+.slideFloat{
+  height: 70px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+
+}
+.float{
+
+  float: left;
+  overflow: visible;
+
+}
+#minYear{
+  height: 15px;
+  width: 10%;
+  text-align:center;
+  font-size: 10px;
+
+}
+#maxYear{
+  height: 15px;
+  width: 10%;
+  text-align:center;
+  font-size: 10px;
+}
 .slider {
   -webkit-appearance: none;
   width: 80%;
   height: 15px;
-  margin-top: -30px;
+
   border-radius: 5px;
   background: #d3d3d3;
   outline: none;

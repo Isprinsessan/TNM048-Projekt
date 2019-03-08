@@ -1,13 +1,7 @@
-var GLOBALLINES;
-var GLOBALDATA;
-
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
-  GLOBALLINES = meanLines;
-  GLOBALDATA = data;
   //Create colors for lines.
-  var colors = colorbrewer.PuOr[Math.min(Math.max(nrOfCluster,3),11)];
-
+  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster+1,3),12)];
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
       margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
@@ -142,7 +136,6 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     }
 
     //Update the click functions
-    updateClick(data, meanLines);
 
   }
 
@@ -282,11 +275,11 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       selected_lines = d3.selectAll("path");
 
       //Mouse over function
-      mouseOver(selected_lines, data, meanLines,index);
+      mouseOver(selected_lines, data, meanLines, index);
       //Mouse out function
       mouseOut(selected_lines);
       //Mouse click function
-      mouseClick(selected_lines, data, meanLines,colors);
+      mouseClick(selected_lines, data, meanLines, colors);
 
   }
 
@@ -294,7 +287,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   var originalWidth = 0;
 
   //Mouse over function
-  function mouseOver(selected_lines, data, meanLines,index)
+  function mouseOver(selected_lines, data, meanLines, index)
   {
       //On mouse over increase the width of the line
       selected_lines.on("mouseover", function(d)
@@ -356,15 +349,17 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   }
 
   //On mouse click function
-  function mouseClick(selected_lines, data, meanLines,colors)
+  function mouseClick(selected_lines, data, meanLines,colors, index)
   {
-
       //On mouse click, change the data shown in the focus plot
       selected_lines.on("click", function(d){
 
           //Make sure that it is a line that is targeted and not an axis
           if(this.attributes[0].nodeValue != "clusterLines" && this.attributes[0].nodeValue != "plotLines" )
               return;
+
+          //Create information tooltip
+          var information = new Information();
 
           //Select all the lines in the focus plot (if changed to d3.selectAll("path"), it will work with the cluster plot too)
           var allLines = focus.selectAll("path");
@@ -424,10 +419,33 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           }
           else if(this.attributes[0].nodeValue == "plotLines")
           {
+             //Update the information in tooltip
+              if(index ==-1)
+              {
+                  information.tooltipPlotClicked(data[this.id]);
+              }else
+              {
+                  information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
+
+
+              }
               //If the line is in the focus plot, send the data for that line to the map
-              selected_data.push(data[idx]);
+
+              if(index != -1)
+              {
+
+                 selected_data.push(data[meanLines[index].index[idx]]);
+                 updateInfo(data[meanLines[index].index[idx]]['Area Abbreviation']);
+
+               }else{
+
+                 selected_data.push(data[idx]);
+                  updateInfo(data[idx]['Area Abbreviation']);
+               }
+
           }
 
+          //updateData(selected_data);
           //Update the map with the new data and recolor it
           updateData(selected_data);
           var year_in = document.getElementById("myRange").value;
