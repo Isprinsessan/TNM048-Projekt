@@ -47,6 +47,7 @@ function DBSCAN(data, eps, minPts)
 		label[i] = clusterCounter;
 		neighbors.forEach(function(d)
 		{
+			// Check if cluster is Noise
 			if(label[d.Index] == NOISE)
 			{
 				label[d.Index] = clusterCounter;
@@ -55,11 +56,13 @@ function DBSCAN(data, eps, minPts)
 			{
 				return;
 			}
-
+			//Label the line to that cluster
 			label[d.Index] =clusterCounter;
+			//FInd neibhours to d
 			var N = findNeighbours(data, data[d.Index], eps);
 			if(N.length>minPts)
 			{
+				//Set to cluster
 				N.forEach(function(s)
 				{
 					label[s.Index] = clusterCounter;
@@ -71,12 +74,20 @@ function DBSCAN(data, eps, minPts)
 }
 
 
-//Find all neighbors that is closer than the eps
+//The findNeighbours function will find all
+//lines that are closer to than eps to the current line
+//
+//data: The data that will be evaluate
+//points: The line that is compared to
+//eps: The maximal distance from point that will be considered.
+//
+//Returns an array with all neighbours to point that is closer than eps
 function findNeighbours(data,point, eps)
 {
 	var neighbors = [];
 	for(var i = 0; i<data.length; i++)
 	{
+		//Calculate the distance between the point and data
 		var dist =euclideanDist(point, data[i]);
 		if(dist < eps)
 		{
@@ -97,28 +108,42 @@ function findNeighbours(data,point, eps)
 }
 
 
-//Get the eucleadian distance for every year
+//The function euclideanDist calculates the distance between two lines
+//
+//point1: First line
+//point2: Second line
+//
+//returns the distance between the two points
 function euclideanDist(point1, point2)
 {
 	var sum =0;
 	for(var i =1961; i<=2013; i++)
 	{
-		//if(point1["Y"+i] ==0 || point2["Y"+i] ==0)
-	
-			sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
-		//}
-		
-		
+		sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
 	}
 	return Math.sqrt(sum);
 }
 
-
+//The function CalulateMeanLines takes in which lines that belongs to a 
+//certain cluster and calulates its meanLine.
+//
+//data: All the lines
+//label: An array with the cluster labels
+//
+//Return an object{
+//	lines{
+//		lines: The mean line
+//		index: Which lines that the mean line contains
+//		color: The color index
+//		}
+//	nrOfCluster: How many cluster there are
+//}
 function CalulateMeanLines(data, label)
 {
 	var lines =[];
 	//Check how many different labels there are
 	var max = 0;
+	//Check how many cluster there are without the NOISE
 	label.forEach(function(d)
 	{
 		if(d>max && d != NOISE)
@@ -127,6 +152,7 @@ function CalulateMeanLines(data, label)
 		}
 	})
 
+	//Loop over nr of clusters where 0 is NOISE
 	for(var i=1; i<=max; i++)
 	{
 		//Sum over all years
@@ -135,6 +161,7 @@ function CalulateMeanLines(data, label)
 		var indexCheck = [];
 		for(var j =0; j<data.length; j++)
 		{
+			//If label corresponds to the current cluster add that line to sum
 			if(label[j] ==i)
 			{
 				counter++;
@@ -143,6 +170,7 @@ function CalulateMeanLines(data, label)
 
 					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
 				}
+				//Add which index the line has
 				indexCheck.push(j);
 			}
 		}
@@ -156,6 +184,7 @@ function CalulateMeanLines(data, label)
 				year: y
 			});
 		}
+		//Resulting object contains the resulting line, which index that it is made up by and its color index
 		lines.push({
 			line: result,
 			index: indexCheck,
@@ -187,6 +216,7 @@ function CalulateMeanLines(data, label)
 		}
 
 	}
+
 	return {
 		lines: lines,
 		nrOfCluster: max
