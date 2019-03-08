@@ -217,12 +217,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
                  .attr("class", "plotLines")
                  .datum(currentData)
                  .attr("fill", "none")
-                 .attr("stroke", "red")
+                 .attr("stroke", "blue")
                  .attr("stroke-linejoin", "round")
                  .attr("stroke-linecap", "round")
                  .attr("stroke-width", 1.0)
                  .attr("d", line)
-                 .attr("id", i);
+                 .attr("id", i)
+                 .style("stroke-opacity", 0.5);
+
 
           }
       }
@@ -250,12 +252,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
                  .attr("class", "plotLines")
                  .datum(currentData)
                  .attr("fill", "none")
-                 .attr("stroke", "red")
+                 .attr("stroke", "blue")
                  .attr("stroke-linejoin", "round")
                  .attr("stroke-linecap", "round")
                  .attr("stroke-width", 1.0)
                  .attr("d", line)
-                 .attr("id", i);
+                 .attr("id", i)
+                 .style("stroke-opacity", 0.5);
+
 
           }
       }
@@ -280,7 +284,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
       //Mouse out function
       mouseOut(selected_lines);
       //Mouse click function
-      mouseClick(selected_lines, data, meanLines, colors);
+      mouseClick(selected_lines, data, meanLines, colors, index);
 
   }
 
@@ -302,6 +306,14 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Rescale the line on hover
           d3.select(this).attr('stroke-width', 10);
+
+           //Store the original color
+          orginalColor = d3.select(this).attr('stroke');
+
+          //Recolor the line on hover
+          d3.select(this).attr('stroke', 'red');
+          //Change opacity
+          d3.select(this).style("stroke-opacity", 1.0);
 
           //Create a information object
           var information = new Information();
@@ -344,7 +356,10 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           if(d3.select(this).attr("clicked") == "clicked")
               return;
 
+          //Change back to standard after mouse has been over
           d3.select(this).attr('stroke-width', originalWidth);
+          d3.select(this).attr("stroke", orginalColor)
+          d3.select(this).style("stroke-opacity", 0.5);
 
       });
   }
@@ -352,6 +367,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
   //On mouse click function
   function mouseClick(selected_lines, data, meanLines,colors, index)
   {
+
       //On mouse click, change the data shown in the focus plot
       selected_lines.on("click", function(d){
 
@@ -381,8 +397,10 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
               //Store all the original values in an array
               orgValArray[i] = allLines._groups[0][i].attributes[5].nodeValue;
 
-              //Set the stroke width to the original value
-              allLines._groups[0][i].attributes[5].nodeValue = 1;
+
+            //Set the stroke width to the original value
+            allLines._groups[0][i].attributes[5].nodeValue = 1;
+            allLines._groups[0][i].attributes[2].nodeValue = "blue"
 
           }
 
@@ -426,9 +444,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
                   information.tooltipPlotClicked(data[this.id]);
               }else
               {
+
                   information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
-
-
               }
 
               //If the line is in the focus plot, send the data for that line to the map

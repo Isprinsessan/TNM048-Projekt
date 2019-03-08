@@ -1,4 +1,3 @@
-
 var FAODATA;
 var GEODATA;
 var MYMAP;
@@ -160,9 +159,6 @@ information = new Information();
         {
             //information.tooltipMap(GEODATA.features[j].properties, FAODATA[0].Item);
             COUNTRYDISPLAY = GEODATA.features[j].properties
-            console.log(GEODATA.features[j].properties.adm0_a3);
-            console.log(country);
-            console.log(GEODATA.features[j].properties.name);
             
             information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
             break;
