@@ -103,7 +103,11 @@ function euclideanDist(point1, point2)
 	var sum =0;
 	for(var i =1961; i<=2013; i++)
 	{
-		sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
+		//if(point1["Y"+i] ==0 || point2["Y"+i] ==0)
+	
+			sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
+		//}
+		
 		
 	}
 	return Math.sqrt(sum);
@@ -136,6 +140,7 @@ function CalulateMeanLines(data, label)
 				counter++;
 				for(var y=1961; y<=2013; y++)
 				{
+
 					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
 				}
 				indexCheck.push(j);

@@ -127,7 +127,8 @@ function updateData(data_in){
 }
 function updateMap(year_in) {
 
-
+  //Create information tooltip
+  var information = new Information();
   //add values to geojson
   var year = "Y" + year_in;
   addValueGeo(GEODATA,FAODATA,year);
@@ -141,11 +142,10 @@ function updateMap(year_in) {
     }).addTo(MYMAP);
   updateLegend();
 
-  if(COUNTRYDISPLAY){
-  information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
+//  if(COUNTRYDISPLAY){
+ // information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
   //updateInfo(FAODATA[0]['Area Abbreviation']);
-  }
-
+  //}
   //information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
 }
 
