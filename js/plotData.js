@@ -413,18 +413,23 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
               }else
               {
                   information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
+
+
               }
               //If the line is in the focus plot, send the data for that line to the map
-              
+
               if(index != -1)
               {
 
                  selected_data.push(data[meanLines[index].index[idx]]);
+                 updateInfo(data[meanLines[index].index[idx]]['Area Abbreviation']);
+
                }else{
 
                  selected_data.push(data[idx]);
+                  updateInfo(data[idx]['Area Abbreviation']);
                }
-             
+
           }
 
           //updateData(selected_data);
