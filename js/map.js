@@ -141,9 +141,34 @@ function updateMap(year_in) {
     }).addTo(MYMAP);
   updateLegend();
 
+  if(COUNTRYDISPLAY){
   information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
+  //updateInfo(FAODATA[0]['Area Abbreviation']);
+  }
+
+  //information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
 }
 
+/*
+function updateInfo(country){
+
+  for (var j = 0; j < Object.keys(GEODATA.features).length; j++) {
+
+
+
+        if(GEODATA.features[j].properties.adm0_a3 == country)
+        {
+            //information.tooltipMap(GEODATA.features[j].properties, FAODATA[0].Item);
+            COUNTRYDISPLAY = GEODATA.features[j].properties
+            console.log(GEODATA.features[j].properties);
+            console.log(COUNTRYDISPLAY);
+            information.tooltipMap(COUNTRYDISPLAY, FAODATA[0].Item);
+            break;
+        }
+
+    }
+}
+*/
 function styleColor(feature) {
     return {
         fillColor: getColor(feature.properties.value),
