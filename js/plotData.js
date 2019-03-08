@@ -2,6 +2,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
   var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster+1,3),12)];
+
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
       margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
@@ -429,8 +430,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
 
               }
-              //If the line is in the focus plot, send the data for that line to the map
 
+              //If the line is in the focus plot, send the data for that line to the map
               if(index != -1)
               {
 
