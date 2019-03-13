@@ -1,7 +1,7 @@
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
-  var colors = colorbrewer.Set3[Math.min(Math.max(nrOfCluster+1,3),12)];
+  var colors = colorbrewer.Paired[Math.min(Math.max(nrOfCluster+1,3),11)];
   //Create margin, width and height variables for the plots
   var margin = { top : 20, right: 20, bottom: 50, left: 40 },
       margin2 = { top: 20, right: 20, bottom: 50, left: 40 },
@@ -117,7 +117,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
           //Create the line from the years and the values
           line = d3.line()
-            .defined(function(d) {return d.value!=Infinity&& d.value !=0})
+            .defined(function(d) {return d.value!=Infinity&& d.value !=0 && !isNaN(d.value)&& d.value !=undefined})
             .x(function(d) { return clusterX(parseDate(d.year))})
             .y(function(d) {return clusterY(d.value);})
 
@@ -134,6 +134,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
              .attr("id", i);
 
     }
+   // console.log(d3.selectAll("path"));
 
     //Update the click functions
 
@@ -207,7 +208,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
           {
               var currentData = getYearAndValues(data[i]);
               line = d3.line()
-                  .defined(function(d) {return d.value!=Infinity&& d.value !=0})
+                  .defined(function(d) {return d.value!=Infinity&& d.value !=0 && !isNaN(d.value)&& d.value !=undefined} )
                  .x(function(d) { return x(parseDate(d.year))})
                  .y(function(d) { return y(d.value)})
 
@@ -242,7 +243,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
               //Create the line from the year and specified value
               line = d3.line()
-                 .defined(function(d) {return d.value!=Infinity && d.value !=0})
+                 .defined(function(d) {return d.value!=Infinity && d.value !=0&& !isNaN(d.value) && d.value !=undefined})
                  .x(function(d) { return x(parseDate(d.year))})
                  .y(function(d) { return y(d.value)})
 

@@ -19,7 +19,7 @@ function Information()
     var counter = 0;
     d.line.forEach(function(d)
     {
-      if(d.value !=Infinity &&d.value !=0)
+      if(d.value !=Infinity &&d.value !=0&&!isNaN(d.value))
       {
         sum +=d.value;
         counter++;
@@ -69,7 +69,7 @@ function Information()
     //console.log(d);
     for(var i =1961;i<=2013 ;i++)
     {
-      if(d["Y"+i] !=Infinity &&d["Y"+i] !=0)
+      if(d["Y"+i] !=Infinity &&d["Y"+i] !=0&&!isNaN(d["Y"+i]))
       {
         sum +=d["Y"+i];
         counter++;
@@ -109,7 +109,7 @@ function Information()
     //console.log(d);
     for(var i =1961;i<=2013 ;i++)
     {
-      if(d["Y"+i] !=Infinity &&d["Y"+i] !=0)
+      if(d["Y"+i] !=Infinity &&d["Y"+i] !=0 &&!isNaN(d["Y"+i]))
       {
         sum +=d["Y"+i];
         counter++;
@@ -146,7 +146,7 @@ function Information()
         .style("font-weight", "bold")
     //Select the food id in tooptip and change the text
     tooltip.select("#amount-map")
-        .text("Amount produced: " );
+        .text("Amount available: " );
     tooltip.select("#amount-map-value")
         .text( d.value.toFixed(2))
         .style("font-weight", "bold")

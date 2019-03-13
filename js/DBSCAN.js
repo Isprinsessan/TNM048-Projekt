@@ -118,8 +118,10 @@ function euclideanDist(point1, point2)
 {
 	var sum =0;
 	for(var i =1961; i<=2013; i++)
-	{
-		sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
+	{	if(point1["Y"+i] != 0 && point2["Y"+i] !=0)
+		{
+			sum += Math.pow(point1["Y"+i]-point2["Y"+i],2);
+		}			
 	}
 	return Math.sqrt(sum);
 }
@@ -157,18 +159,22 @@ function CalulateMeanLines(data, label)
 	{
 		//Sum over all years
 		var sum = new Array(data.length).fill(0);
-		var counter = 0;
+		var counter = new Array(data.length).fill(0);;
 		var indexCheck = [];
 		for(var j =0; j<data.length; j++)
 		{
 			//If label corresponds to the current cluster add that line to sum
 			if(label[j] ==i)
 			{
-				counter++;
+				
 				for(var y=1961; y<=2013; y++)
 				{
-
-					sum[y-1961]= sum[y-1961] +data[j]["Y"+y];
+					if(data[j]["Y"+y] !=0 && !isNaN(data[j]["Y"+y]) && data[j]["Y"+y] !=undefined && data[j]["Y"+y] !=Infinity)
+					{
+						sum[y-1961] = sum[y-1961] +data[j]["Y"+y];
+						counter[y-1961]++;
+					}
+		
 				}
 				//Add which index the line has
 				indexCheck.push(j);
@@ -178,9 +184,10 @@ function CalulateMeanLines(data, label)
 		var result = [];
 		for(var y=1961; y<=2013; y++)
 		{
+
 			result.push(
 			{
-				value: sum[y-1961]/counter,
+				value: sum[y-1961]/counter[y-1961],
 				year: y
 			});
 		}
@@ -200,11 +207,22 @@ function CalulateMeanLines(data, label)
 			var result = [];
 			for(var y=1961; y<=2013; y++)
 			{
-				result.push(
+				if(!isNaN(data[j]["Y"+y]))
 				{
-					value: data[j]["Y"+y],
-					year: y
-				});
+					result.push(
+					{
+						value: data[j]["Y"+y],
+						year: y
+					});
+				}else
+				{
+					result.push(
+					{
+						value: 0,
+						year: y
+					});
+				}
+				
 			}
 			lines.push(
 			{
