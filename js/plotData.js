@@ -137,6 +137,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
     }
 
     //Update the click functions
+    updateClick(data, meanLines,colors, index);
 
   }
 
