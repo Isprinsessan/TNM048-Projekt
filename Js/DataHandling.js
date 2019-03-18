@@ -1,3 +1,10 @@
+/*
+Author: Daniel Olsson
+Last Updated: 2019-02-26
+Description:
+This file has all relevant Data handling function to split and parse the data
+*/
+
 
 //Takes in the data and make relevant string into ints and seperates the data into Feed and Food
 function parseData(data)
@@ -58,6 +65,7 @@ function convertToPerCapita(food, population)
 		//Find cooresponding country
 		for(var i = 0; i<population.length; i++)
 		{
+			//Check country abbrevation
 			if(f["Area Abbreviation"] == population[i]["Country Code"])
 			{
 				country = population[i];
@@ -88,10 +96,13 @@ function convertToPerCapita(food, population)
 function maxAllYears(data)
 {
 	max = 0;
+	//Loop over all data
 	for(var d=0; d<data.length;d++)
 	{
+		//Check all year
 		for(var i =1961; i<=2013;i++)
 		{
+			//Check so no data is classified as infinity
 			if(max <data[d]["Y"+i] && data[d]["Y"+i] !=Infinity )
 			{
 				max = data[d]["Y"+i];
@@ -106,10 +117,11 @@ function maxValueYears(data, minYear, maxYear)
 {
 	var maxYears =[];
 	console.log(data);
+	//Loop between the two input years
 	for(var i =minYear; i<=maxYear;i++)
 	{
 		var max =0;
-
+		//Check each year  which value that is the max
 		data.forEach(function(d)
 		{
 			if(max<d["Y"+i])

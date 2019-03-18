@@ -104,9 +104,10 @@ function Information()
     tooltip.select("#food-plot-value-clicked")
         .text(d["Item"])
         .style("font-weight", "bold")
+    
+   //Caluclate mean
     var sum =0;
     var counter =0;
-    //console.log(d);
     for(var i =1961;i<=2013 ;i++)
     {
       if(d["Y"+i] !=Infinity &&d["Y"+i] !=0 &&!isNaN(d["Y"+i]))
@@ -117,6 +118,7 @@ function Information()
 
     }
     sum =sum/counter;
+    
     //Select the food id in tooptip and change the text
     tooltip.select("#mean-plot-clicked")
         .text("Mean avaiblity: ");

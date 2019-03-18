@@ -26,10 +26,10 @@ d3.queue()
 
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,75,2);
-
+        //Calculate mean lines
     	var mLines =CalulateMeanLines(foodAttribute, label);
-
     	meanLines = mLines.lines;
+        
       //Plot the datas
     	FocusPlotContext(foodAttribute, meanLines, mLines.nrOfCluster);
 

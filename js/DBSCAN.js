@@ -205,8 +205,10 @@ function CalulateMeanLines(data, label)
 		if(label[j] ==NOISE)
 		{
 			var result = [];
+			//Push all years
 			for(var y=1961; y<=2013; y++)
 			{
+				//Check so data exist else push the value 0 to the data
 				if(!isNaN(data[j]["Y"+y]))
 				{
 					result.push(
@@ -224,6 +226,7 @@ function CalulateMeanLines(data, label)
 				}
 				
 			}
+			//Add line
 			lines.push(
 			{
 				line: result,
@@ -234,7 +237,7 @@ function CalulateMeanLines(data, label)
 		}
 
 	}
-
+	//Return the structure
 	return {
 		lines: lines,
 		nrOfCluster: max
