@@ -144,6 +144,7 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
    // console.log(d3.selectAll("path"));
 
     //Update the click functions
+    updateClick(data, meanLines,colors, index);
 
   }
 
@@ -454,8 +455,8 @@ function FocusPlotContext(data, meanLines, nrOfCluster)
 
                   information.tooltipPlotClicked(data[meanLines[index].index[this.id]])
               }
-              //If the line is in the focus plot, send the data for that line to the map
 
+              //If the line is in the focus plot, send the data for that line to the map
               if(index != -1)
               {
 
