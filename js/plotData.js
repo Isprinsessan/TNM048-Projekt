@@ -1,3 +1,10 @@
+/*
+Author: Erik Nilsson and Daniel Olsson
+Last Updated: 2019-03-01
+Description:
+This file draws and update the lines in the plots
+*/
+
 function FocusPlotContext(data, meanLines, nrOfCluster)
 {
   //Create colors for lines.
