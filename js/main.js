@@ -1,3 +1,11 @@
+/*
+Author: Daniel Olsson, Erik Nilsson, Lucas Rung
+Last Updated: 2019-03-01
+Description:
+The main function that reads the data and runs all the scipts.
+*/
+
+//Global variables storing the data and the colors
 var dataObject =[];
 var meanLines = [];
 var colors = [];
@@ -29,7 +37,7 @@ d3.queue()
         //Calculate mean lines
     	var mLines =CalulateMeanLines(foodAttribute, label);
     	meanLines = mLines.lines;
-        
+
       //Plot the datas
     	FocusPlotContext(foodAttribute, meanLines, mLines.nrOfCluster);
 
