@@ -1,3 +1,10 @@
+/*
+Author: Erik Nilsson
+Last Updated: 2019-03-01
+Description:
+This file handles the information boxes and updates correct one on hover and click.
+*/
+
 function Information()
 {
 
@@ -104,7 +111,7 @@ function Information()
     tooltip.select("#food-plot-value-clicked")
         .text(d["Item"])
         .style("font-weight", "bold")
-    
+
    //Caluclate mean
     var sum =0;
     var counter =0;
@@ -118,7 +125,7 @@ function Information()
 
     }
     sum =sum/counter;
-    
+
     //Select the food id in tooptip and change the text
     tooltip.select("#mean-plot-clicked")
         .text("Mean avaiblity: ");
