@@ -23,7 +23,6 @@ d3.queue()
       //Get a ceertain attribute from the data
     	var foodAttribute =splitOnAttribute(foodFeed[0],'Item Code', 2656);
 
-
       //Run the DBSCAN and label the data
     	var label =DBSCAN(foodAttribute,75,2);
         //Calculate mean lines
